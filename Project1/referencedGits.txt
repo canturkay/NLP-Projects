@@ -1,0 +1,1 @@
+Used https://github.com/mallocassi/Golden-Globes-NLP/blob/master/gg.py as reference for the hosts function.

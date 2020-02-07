@@ -1,5 +1,6 @@
 import json
 from levenshtein import fuzzy_match
+from host import get_hosts
 #check timestamps
 
 file = open('data/gg2020.json')
