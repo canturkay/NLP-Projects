@@ -1,6 +1,9 @@
 import json
+from .levenshtein import fuzzy_match
+
 
 file = open('data/gg2020.json')
+
 
 data = json.load(file)
 
