@@ -5,6 +5,7 @@ from .get_award_names import get_award_names
 # from .nominees import
 from .host import get_hosts
 from .presenter import get_presenters
+from .get_best_dressed import dress_sentiment
 
 
 class GGresponse:
@@ -27,6 +28,8 @@ class GGresponse:
         self.get_award_names()
         self.get_presenters()
         self.get_nominees()
+        self.best_dressed
+        
 
     def get_nominees(self):
         self.nominee_people = get_nominee_names(self.data, self.award_names)

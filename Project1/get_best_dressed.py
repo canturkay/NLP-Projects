@@ -55,6 +55,16 @@ def controversialDressed(potentialNames):
   middle = int(len(potentialNames)/2)
   return potentialNames[middle]
 
+
+def dress_sentiment(data): 
+  #Given a list of tweets, finds the best, worst and most controversially dressed people at the Golden Globes for the year
+  candidates = get_best_dressed(data)
+  sentiment = {}
+  sentiment['best'] = bestDressed(candidates)
+  sentiment['worst'] = worstDressed(candidates)
+  sentiment['controversial'] = controversialDressed(candidates)
+  return sentiment
+
 datas = []
 for path in paths:
   file = open(path)
