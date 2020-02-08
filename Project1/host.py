@@ -1,5 +1,6 @@
 import json
 import nltk
+from itertools import islice
 
 paths = ['data/gg2015.json', 'data/gg2013.json']
 
@@ -32,8 +33,13 @@ def get_hosts(path):
               break
           else:
             potentialNames[name + ' ' + lastName] = 1
+
+  first, second = islice(potentialNames.values(), 2)
   potentialNames = [*potentialNames]
-  hosts = potentialNames[:2]
+  if first <= 2*second: 
+    hosts = potentialNames[:2]
+  else: 
+    hosts = potentialNames[:1]
   print(hosts)
   return hosts
 
