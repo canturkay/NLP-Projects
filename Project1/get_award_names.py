@@ -1,16 +1,12 @@
 import nltk
 import json
-import Levenshtein
-
-
-def fuzzy_match(base_str, candidate_str, threshold):
-    dist = Levenshtein.distance(base_str, candidate_str)
-    base_len = len(base_str)
-    return (dist <= round(base_len * threshold))
 
 
 def get_award_name(tags):
     i = 0
+
+    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+
     while i < len(tags) - 2 and tags[i][0] != "Best":
         i += 1
 
@@ -18,6 +14,8 @@ def get_award_name(tags):
         award_name = "Best"
         i += 1
         while tags[i][1] == "NNP" and i < len(tags) - 1:
+            if tags[i][0] in stopwords:
+                break
             award_name += " " + tags[i][0]
             i += 1
         if award_name != "Best":
