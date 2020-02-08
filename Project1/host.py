@@ -4,6 +4,7 @@ import nltk
 paths = ['data/gg2015.json', 'data/gg2013.json']
 
 
+
 def get_hosts(path): 
   #Given a path to a json object of an array of tweets, returns the hosts of the golden globes for the year.
   file = open(path)
