@@ -19,7 +19,7 @@ def get_presenter_for_award(tweets, award):
   #Given a dictionary of tweets and a specific award, returns the presenter of the award
   potentialNames = {}
   for tweet in tweets:
-    if 'present' in tweet and award in tweet:
+    if 'present' in tweet.lower() and award in tweet:
       tags = nltk.pos_tag(nltk.word_tokenize(tweet))
       for i in range(len(tags) - 1):
         name = ''
@@ -31,31 +31,25 @@ def get_presenter_for_award(tweets, award):
         if len(name) != 0 and len(lastName) != 0:
           if name + ' ' + lastName in potentialNames:
               potentialNames[name + ' ' + lastName] += 1
-            if potentialNames[name + ' ' + lastName] == 300:
-              potentialNames = dict(
-                  sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
-              if potentialNames:
-                first, second = islice(potentialNames.values(), 2)
-                potentialNames = [*potentialNames]
-                if first <= 2 * second:
-                  presenters = potentialNames[:2]
-                else:
-                  presenters = potentialNames[:1]
-                return presenters
+              if potentialNames[name + ' ' + lastName] == 300:
+                potentialNames = dict(
+                    sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
+                if potentialNames:
+                  first, second = islice(potentialNames.values(), 2)
+                  potentialNames = [*potentialNames]
+                  if first <= 2 * second:
+                    presenters = potentialNames[:2]
+                  else:
+                    presenters = potentialNames[:1]
+                  return presenters
           else:
             if name in first_names:
               potentialNames[name + ' ' + lastName] = 1
   if potentialNames:
     potentialNames = dict(sorted(potentialNames.items(),
                                  key=lambda item: item[1], reverse=True))
-    first, second = islice(potentialNames.values(), 2)
     potentialNames = [*potentialNames]
-    if first <= 2 * second:
-      presenters = potentialNames[:2]
-    else:
-      presenters = potentialNames[:1]
-    # print(presenters)
-    return presenters
+    return potentialNames[0]
   else:
     return
   
@@ -77,3 +71,8 @@ for path in paths:
   file = open(path)
   data = json.load(file)
   print(get_presenters(data))
+data = list()
+with open('data/gg2020.json', 'r') as f_in:
+  for line in f_in:
+    data.append(json.loads(line))
+print(get_presenters(data))
