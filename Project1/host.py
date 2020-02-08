@@ -5,6 +5,8 @@ from itertools import islice
 paths = ['data/gg2015.json', 'data/gg2013.json']
 
   
+file_first_names = open('data/names.json')
+first_names = json.load(file_first_names)
 
 def get_hosts(data): 
   #Given a dictionary of tweets, returns the hosts of the golden globes for the year the tweets were tweeted.
@@ -36,7 +38,8 @@ def get_hosts(data):
                 hosts = potentialNames[:1]
               return hosts
           else:
-            potentialNames[name + ' ' + lastName] = 1
+            if name in first_names:
+              potentialNames[name + ' ' + lastName] = 1
   potentialNames = dict(
     sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
   first, second = islice(potentialNames.values(), 2)

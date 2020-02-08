@@ -32,7 +32,7 @@ def get_best_dressed(data):
             potentialNames[name + ' ' +
                              lastName] += sent
             if(potentialNames[name + ' ' +
-                              lastName] == 50):
+                              lastName] == 150):
               potentialNames = dict(
                   sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
               potentialNames = [*potentialNames]
@@ -41,7 +41,7 @@ def get_best_dressed(data):
           else:
             if(name in first_names):
               potentialNames[name + ' ' +
-                             lastName] = sent * 10
+                             lastName] = 10
   potentialNames = dict(
       sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
   potentialNames = [*potentialNames]
