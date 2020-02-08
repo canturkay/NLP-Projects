@@ -4,18 +4,15 @@ from itertools import islice
 
 paths = ['data/gg2015.json', 'data/gg2013.json']
 
+  
 
-
-def get_hosts(path): 
-  #Given a path to a json object of an array of tweets, returns the hosts of the golden globes for the year.
-  file = open(path)
-  data = json.load(file)
-
+def get_hosts(data): 
+  #Given a dictionary of tweets, returns the hosts of the golden globes for the year the tweets were tweeted.
   stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
   data = [tweet['text'] for tweet in data]
   potentialNames = {}
   for tweet in data:
-    if 'host' in tweet:
+    if 'Hosts' in tweet or 'host' in tweet or 'hosts' in tweet:
       tags = nltk.pos_tag(nltk.word_tokenize(tweet))
       for i in range(len(tags) - 1):
         name = ''
@@ -27,21 +24,32 @@ def get_hosts(path):
         if len(name) != 0 and len(lastName) != 0:
           if name + ' ' + lastName in potentialNames:
             potentialNames[name + ' ' + lastName] += 1
-            if potentialNames[name + ' ' + lastName] == 500:
-              break
+            if potentialNames[name + ' ' + lastName] == 300:
+              print('i came i saw i conquered')
+              potentialNames = dict(
+                  sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
+              first, second = islice(potentialNames.values(), 2)
+              potentialNames = [*potentialNames]
+              if first <= 2*second:
+                hosts = potentialNames[:2]
+              else:
+                hosts = potentialNames[:1]
+              return hosts
           else:
             potentialNames[name + ' ' + lastName] = 1
   potentialNames = dict(
     sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
   first, second = islice(potentialNames.values(), 2)
   potentialNames = [*potentialNames]
-  if first <= 2*second: 
+  if first <= 2*second:
     hosts = potentialNames[:2]
-  else: 
+  else:
     hosts = potentialNames[:1]
   return hosts
 
 
+datas = []
 for path in paths:
-  hosts = get_hosts(path)
-  print(hosts)
+  file = open(path)
+  data = json.load(file)
+  print(get_hosts(data))

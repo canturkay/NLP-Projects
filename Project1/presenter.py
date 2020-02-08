@@ -1,7 +1,6 @@
 import json
 import nltk
 from itertools import islice
-from host import get_hosts
 
 paths = ['data/gg2015.json', 'data/gg2013.json']
 
@@ -17,7 +16,7 @@ file_first_names = open('data/names.json')
 first_names = json.load(file_first_names)
 
 def get_presenter_for_award(tweets, award):
-  
+  #Given a dictionary of tweets and a specific award, returns the presenter of the award
   potentialNames = {}
   for tweet in tweets:
     if 'present' in tweet and award in tweet:
@@ -35,13 +34,22 @@ def get_presenter_for_award(tweets, award):
               potentialNames[name + ' ' + lastName] += 5
             else: 
               potentialNames[name + ' ' + lastName] += 1
-            if potentialNames[name + ' ' + lastName] == 30:
+            if potentialNames[name + ' ' + lastName] == 300:
               potentialNames = dict(
                   sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
-              break
+              if potentialNames:
+                first, second = islice(potentialNames.values(), 2)
+                potentialNames = [*potentialNames]
+                if first <= 2 * second:
+                  presenters = potentialNames[:2]
+                else:
+                  presenters = potentialNames[:1]
+                return presenters
           else:
             potentialNames[name + ' ' + lastName] = 1
   if potentialNames:
+    potentialNames = dict(sorted(potentialNames.items(),
+                                 key=lambda item: item[1], reverse=True))
     first, second = islice(potentialNames.values(), 2)
     potentialNames = [*potentialNames]
     if first <= 2 * second:
@@ -54,10 +62,8 @@ def get_presenter_for_award(tweets, award):
     return
   
 
-def get_presenters(path, awards = Awards): 
+def get_presenters(data, awards = Awards): 
   #Given a path to a json object of an array of tweets and award categories, returns the presenter of all awards of the golden globes for the year as dictionaries.
-  file = open(path)
-  data = json.load(file)
   data = [tweet['text'] for tweet in data]
   presenters = {}
   for award in awards:
@@ -66,9 +72,10 @@ def get_presenters(path, awards = Awards):
       stopwords.append(tag[0])
   for award in awards: 
     presenters[award] = get_presenter_for_award(data, award)
-  print(presenters)
   return presenters
 
-for path in paths: 
-  get_presenters(path)
 
+for path in paths:
+  file = open(path)
+  data = json.load(file)
+  print(get_presenters(data))
