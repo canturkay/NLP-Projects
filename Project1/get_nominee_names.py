@@ -4,16 +4,14 @@ import nltk
 
 # nlp = spacy.load("en_core_web_sm")
 
-def get_nominee_names(path, awards_list):
+def get_nominee_names(data_in, awards_list):
     # Given a path to a json object of an array of tweets, returns the hosts of the golden globes for the year.
-    file = open(path)
-    data = json.load(file)
 
     file_first_names = open('data/names.json')
     first_names = json.load(file_first_names)
 
     stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'Best']
-    data = [tweet['text'] for tweet in data]
+    data = [tweet['text'] for tweet in data_in]
     potential_names = {}
     count = 0
 
@@ -52,7 +50,11 @@ def get_nominee_names(path, awards_list):
 paths = ['data/gg2013.json']
 
 for path in paths:
-    get_nominee_names(path, ["Best Motion Picture", "Best Performance in a Motion Picture", "Best Actor", "Best Actress",
+
+    file = open(path)
+    data = json.load(file)
+
+    get_nominee_names(data, ["Best Motion Picture", "Best Performance in a Motion Picture", "Best Actor", "Best Actress",
                              "Best Supporting", "Best Director", "Best Screenplay", "Best Original Score",
                              "Best Animated Feature Film", "Best Original Song", "Best Television Series",
                              "Best Foreign Language Film"])

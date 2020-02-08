@@ -27,7 +27,7 @@ def get_award_name(tags):
         return None
 
 
-def get_award_names(tweets_unfiltered):
+def get_potential_award_names(tweets_unfiltered):
     tweets = list(filter(lambda x: "Best" in x["text"], tweets_unfiltered))
     count = 0
     awards = {}
@@ -64,12 +64,16 @@ def parse_awards(awards):
         if count > len(awards) * awards_threshold:
             awards_final.append(award)
 
-    print(awards_final)
+    return awards_final
+
+
+def get_award_names(data_in):
+    potential_awards = get_potential_award_names(data_in)
+    return parse_awards(potential_awards)
+
+
 
 
 file = open('data/gg2015.json', encoding="cp866")
 data = json.load(file)
 
-potentialAwards = get_award_names(data)
-
-parse_awards(potentialAwards)
