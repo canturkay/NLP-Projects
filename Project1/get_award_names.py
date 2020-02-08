@@ -38,7 +38,7 @@ def get_award_names(tweets_unfiltered):
         # print(tags)
         award_name = get_award_name(tags)   # list(filter(lambda x: x[1] in targets, tags)))
         if award_name:
-            if award_name in awards.keys():
+            if award_name in awards:
                 awards[award_name] += 1
             else:
                 awards[award_name] = 1
@@ -67,7 +67,7 @@ def parse_awards(awards):
     print(awards_final)
 
 
-file = open('data/gg2013.json', encoding="cp866")
+file = open('data/gg2015.json', encoding="cp866")
 data = json.load(file)
 
 potentialAwards = get_award_names(data)
