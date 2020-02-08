@@ -27,17 +27,16 @@ def get_nominee_names(path, awards_list):
                 if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
                     last_name = tags[i + 1][0]
                     if name in first_names:
-                        inc = 3
-                        # print(name)
+                        inc = 5
                     else:
                         inc = 1
                     for award in awards_list:
                         if award in tweet:
                             if name not in award and last_name not in award:
                                 if name + ' ' + last_name in potential_names:
-                                    potential_names[name + ' ' + last_name + ' - ' + award] += inc
+                                    potential_names[name + ' ' + last_name][1] += inc
                                 else:
-                                    potential_names[name + ' ' + last_name + ' - ' + award] = inc
+                                    potential_names[name + ' ' + last_name] = [award, inc]
 
         count += 1
         if count % 5000 == 0:
@@ -45,11 +44,11 @@ def get_nominee_names(path, awards_list):
 
     filtered_potential_names = []
     print(potential_names)
-    threshold = 1/100000
+    threshold = 5/1000000
 
-    for name, count in potential_names.items():
-        if count > threshold * len(data):
-            filtered_potential_names.append(name)
+    for name, award_and_count in potential_names.items():
+        if award_and_count[1] > threshold * len(data):
+            filtered_potential_names.append(name + ' - ' + award_and_count[0])
 
     nominees = filtered_potential_names
     print(nominees)
