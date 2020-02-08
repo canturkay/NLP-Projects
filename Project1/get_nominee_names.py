@@ -34,17 +34,19 @@ def get_nominee_names(data_in, awards_list):
         if count % 5000 == 0:
             print(int(count/len(data)*100), "% Complete")
 
-    filtered_potential_names = []
+    filtered_potential_nominees = {}
     print(potential_names)
     threshold = 1/100000
 
     for name, award_and_count in potential_names.items():
-        if award_and_count[1] > 5:
-            filtered_potential_names.append(name + ' - ' + award_and_count[0])
+        if award_and_count[1] > 3:
+            award = award_and_count[0]
+            if award in filtered_potential_nominees:
+                filtered_potential_nominees[award].append(name)
+            else:
+                filtered_potential_nominees[award] = [name]
 
-    nominees = filtered_potential_names
-    print(nominees)
-    return nominees
+    return filtered_potential_nominees
 
 
 paths = ['data/gg2013.json']
@@ -54,7 +56,8 @@ for path in paths:
     file = open(path)
     data = json.load(file)
 
-    get_nominee_names(data, ["Best Motion Picture", "Best Performance in a Motion Picture", "Best Actor", "Best Actress",
-                             "Best Supporting", "Best Director", "Best Screenplay", "Best Original Score",
-                             "Best Animated Feature Film", "Best Original Song", "Best Television Series",
-                             "Best Foreign Language Film"])
+    nominees = get_nominee_names(data, ["Best Performance", "Best Actor", "Best Actress",
+                             "Best Supporting Actor", "Best Supporting Actress",
+                            "Best Director", "Best Original Score", "Best Screenplay"
+                             "Best Original Score", "Best Original Song"])
+    print(nominees)

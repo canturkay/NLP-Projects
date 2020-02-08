@@ -8,6 +8,30 @@ from .presenter import get_presenters
 
 
 class GGresponse:
+    real_award_names = ["best screenplay - motion picture", "best director - motion picture",
+                        "best performance by an actress in a television series - comedy or musical",
+                        "best foreign language film",
+                        "best performance by an actor in a supporting role in a motion picture",
+                        "best performance by an actress in a supporting role in a series, mini-series or motion picture made for television",
+                        "best motion picture - comedy or musical",
+                        "best mini-series or motion picture made for television",
+                        "best original score - motion picture",
+                        "best performance by an actress in a television series - drama",
+                        "best performance by an actress in a motion picture - drama",
+                        "best performance by an actor in a motion picture - comedy or musical",
+                        "best motion picture - drama",
+                        "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television",
+                        "best performance by an actress in a supporting role in a motion picture",
+                        "best television series - drama",
+                        "best performance by an actor in a mini-series or motion picture made for television",
+                        "best performance by an actress in a mini-series or motion picture made for television",
+                        "best animated feature film",
+                        "best original song - motion picture",
+                        "best performance by an actor in a motion picture - drama",
+                        "best television series - comedy or musical",
+                        "best performance by an actor in a television series - drama",
+                        "best performance by an actor in a television series - comedy or musical"
+                        ]
     data = {}
 
     award_names = []
@@ -15,6 +39,8 @@ class GGresponse:
     presenters = {}
     nominee_people = {}
     nominee_movies = {}
+
+    winners = {}
 
     awards = {}
 
@@ -40,6 +66,20 @@ class GGresponse:
 
     def get_presenters(self):
         self.presenters = get_presenters(self.data, self.award_names)
+
+    def get_award_nominees(self, award):
+        if award in self.nominee_people:
+            return self.nominee_people[award]
+        else:
+            return self.nominee_movies[award]
+
+    def get_awards(self):
+        for award in self.award_names:
+            self.awards[award] = {"presenters": self.presenters[award],
+                                  "nominees": self.get_award_nominees(award),
+                                  "winner": self.winners}
+
+        self.awards["Hosts"] = self.hosts
 
 
 
