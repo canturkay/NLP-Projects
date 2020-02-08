@@ -1,18 +1,25 @@
 import json
-from levenshtein import fuzzy_match
-from host import get_hosts
-#check timestamps
 
-file = open('data/gg2020.json')
+from .get_nominee_names import get_nominee_names
+from .get_award_names import get_award_names
 
-data = json.load(file)
 
-awards = ["Best Motion Picture", "Best Performance by an Actress", "Best Performance by an Actor",
-          "Best Performance by an Actress in a Supporting Role", "Best Performance by an Actor in a Supporting Role",
-          "Best Director", "Best Screenplay", "Best Original Score", "Best Original Song", "Best Television Series"]
-#awards = [a.lower() for a in awards]
+class GGresponse:
+    data = {}
+    award_names = []
+    awards = {}
 
-categories = ["Drama", "Musical or Comedy", "Animated", "Foreign Language"]
-#categories = [c.lower() for c in categories]
+    def __init__(self, path):
+        file = open(path)
+        data = json.load(file)
+
+        self.data = data
+
+    def get_nominees(self):
+        person_nominee_names = get_nominee_names(self.data, self.award_names)
+
+    def get_award_names(self):
+        self.award_names = get_award_names(self.data)
+
 
 

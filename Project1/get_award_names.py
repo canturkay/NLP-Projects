@@ -1,16 +1,12 @@
 import nltk
 import json
-import Levenshtein
-
-
-def fuzzy_match(base_str, candidate_str, threshold):
-    dist = Levenshtein.distance(base_str, candidate_str)
-    base_len = len(base_str)
-    return (dist <= round(base_len * threshold))
 
 
 def get_award_name(tags):
     i = 0
+
+    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+
     while i < len(tags) - 2 and tags[i][0] != "Best":
         i += 1
 
@@ -18,6 +14,8 @@ def get_award_name(tags):
         award_name = "Best"
         i += 1
         while tags[i][1] == "NNP" and i < len(tags) - 1:
+            if tags[i][0] in stopwords:
+                break
             award_name += " " + tags[i][0]
             i += 1
         if award_name != "Best":
@@ -29,7 +27,7 @@ def get_award_name(tags):
         return None
 
 
-def get_award_names(tweets_unfiltered):
+def get_potential_award_names(tweets_unfiltered):
     tweets = list(filter(lambda x: "Best" in x["text"], tweets_unfiltered))
     count = 0
     awards = {}
@@ -40,7 +38,7 @@ def get_award_names(tweets_unfiltered):
         # print(tags)
         award_name = get_award_name(tags)   # list(filter(lambda x: x[1] in targets, tags)))
         if award_name:
-            if award_name in awards.keys():
+            if award_name in awards:
                 awards[award_name] += 1
             else:
                 awards[award_name] = 1
@@ -66,12 +64,16 @@ def parse_awards(awards):
         if count > len(awards) * awards_threshold:
             awards_final.append(award)
 
-    print(awards_final)
+    return awards_final
 
 
-file = open('data/gg2013.json', encoding="cp866")
+def get_award_names(data_in):
+    potential_awards = get_potential_award_names(data_in)
+    return parse_awards(potential_awards)
+
+
+
+
+file = open('data/gg2015.json', encoding="cp866")
 data = json.load(file)
 
-potentialAwards = get_award_names(data)
-
-parse_awards(potentialAwards)

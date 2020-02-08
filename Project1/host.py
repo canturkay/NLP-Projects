@@ -15,7 +15,7 @@ def get_hosts(path):
   data = [tweet['text'] for tweet in data]
   potentialNames = {}
   for tweet in data:
-    if 'hosts' in tweet:
+    if 'host' in tweet:
       tags = nltk.pos_tag(nltk.word_tokenize(tweet))
       for i in range(len(tags) - 1):
         name = ''
@@ -27,22 +27,21 @@ def get_hosts(path):
         if len(name) != 0 and len(lastName) != 0:
           if name + ' ' + lastName in potentialNames:
             potentialNames[name + ' ' + lastName] += 1
-            if potentialNames[name + ' ' + lastName] == 10:
-              potentialNames = dict(
-                  sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
+            if potentialNames[name + ' ' + lastName] == 500:
               break
           else:
             potentialNames[name + ' ' + lastName] = 1
-
+  potentialNames = dict(
+    sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
   first, second = islice(potentialNames.values(), 2)
   potentialNames = [*potentialNames]
   if first <= 2*second: 
     hosts = potentialNames[:2]
   else: 
     hosts = potentialNames[:1]
-  print(hosts)
   return hosts
 
 
 for path in paths:
-  get_hosts(path)
+  hosts = get_hosts(path)
+  print(hosts)
