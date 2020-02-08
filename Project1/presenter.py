@@ -30,9 +30,6 @@ def get_presenter_for_award(tweets, award):
           lastName = tags[i + 1][0]
         if len(name) != 0 and len(lastName) != 0:
           if name + ' ' + lastName in potentialNames:
-            if name in first_names:
-              potentialNames[name + ' ' + lastName] += 5
-            else: 
               potentialNames[name + ' ' + lastName] += 1
             if potentialNames[name + ' ' + lastName] == 300:
               potentialNames = dict(
@@ -46,7 +43,8 @@ def get_presenter_for_award(tweets, award):
                   presenters = potentialNames[:1]
                 return presenters
           else:
-            potentialNames[name + ' ' + lastName] = 1
+            if name in first_names:
+              potentialNames[name + ' ' + lastName] = 1
   if potentialNames:
     potentialNames = dict(sorted(potentialNames.items(),
                                  key=lambda item: item[1], reverse=True))
