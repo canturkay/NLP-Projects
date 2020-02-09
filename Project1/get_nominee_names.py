@@ -5,6 +5,7 @@ from Project1.regex import search_award
 
 # nlp = spacy.load("en_core_web_sm")
 
+
 def get_nominee_names(data_in):
     # Given a path to a json object of an array of tweets, returns the hosts of the golden globes for the year.
 
@@ -12,14 +13,15 @@ def get_nominee_names(data_in):
     first_names = json.load(file_first_names)
 
     stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'Best']
-    data = [tweet['text'] for tweet in data_in]
     potential_names = {}
     count = 0
 
-    for tweet in data:
-        if 'nomin' in tweet.lower():
-          tags = nltk.pos_tag(nltk.word_tokenize(tweet))
-          for i in range(len(tags) - 1):
+    data = [tweet['text'] for tweet in data_in]
+    tweets = list(filter(lambda x: "nomin" in x, data))
+
+    for tweet in tweets:
+        tags = nltk.pos_tag(nltk.word_tokenize(tweet))
+        for i in range(len(tags) - 1):
             if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names :
                 name = tags[i][0]
                 if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
@@ -28,7 +30,8 @@ def get_nominee_names(data_in):
                         potential_names[name + ' ' + last_name][1] += 1
                     else:
                         award = search_award(tweet)
-                        if award: potential_names[name + ' ' + last_name] = [award, 1]
+                        if award:
+                            potential_names[name + ' ' + last_name] = [award, 1]
 
         count += 1
         if count % 5000 == 0:

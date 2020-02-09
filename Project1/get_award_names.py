@@ -28,7 +28,7 @@ def get_award_name(tags):
 
 
 def get_potential_award_names(tweets_unfiltered):
-    tweets = list(filter(lambda x: "Best" in x["text"], tweets_unfiltered))
+    tweets = list(filter(lambda x: "best" in x["text"].lower(), tweets_unfiltered))
     count = 0
     awards = {}
 
