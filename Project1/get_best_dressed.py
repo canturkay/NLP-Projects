@@ -9,9 +9,10 @@ paths = ['data/gg2015.json']
 file_first_names = open('data/names.json')
 first_names = json.load(file_first_names)
 
+
 def get_best_dressed(data):
-      #Given a dictionary of tweets, returns the best dressed person at the Golden Globes for the tweets' year.
-      #check nominee name instead of all
+      # Given a dictionary of tweets, returns the best dressed person at the Golden Globes for the tweets' year.
+      # check nominee name instead of all
       stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'GoldenGlobe']
       data = [tweet['text'] for tweet in data]
       potentialNames = {}
@@ -51,6 +52,7 @@ def get_best_dressed(data):
           sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
       potentialNames = [*potentialNames]
       return potentialNames
+
 
 def bestDressed(potentialNames): 
   return potentialNames[0]

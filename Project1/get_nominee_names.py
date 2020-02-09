@@ -1,10 +1,11 @@
 import json
 import nltk
 # import spacy
+from Project1.regex import search_award
 
 # nlp = spacy.load("en_core_web_sm")
 
-def get_nominee_names(data_in, awards_list):
+def get_nominee_names(data_in):
     # Given a path to a json object of an array of tweets, returns the hosts of the golden globes for the year.
 
     file_first_names = open('data/names.json')
@@ -26,9 +27,8 @@ def get_nominee_names(data_in, awards_list):
                     if name + ' ' + last_name in potential_names:
                         potential_names[name + ' ' + last_name][1] += 1
                     else:
-                        for award in awards_list:
-                            if award.lower() in tweet.lower():
-                                potential_names[name + ' ' + last_name] = [award, 1]
+                        award = search_award(tweet)
+                        if award: potential_names[name + ' ' + last_name] = [award, 1]
 
         count += 1
         if count % 5000 == 0:
@@ -39,7 +39,7 @@ def get_nominee_names(data_in, awards_list):
     threshold = 1/100000
 
     for name, award_and_count in potential_names.items():
-        if award_and_count[1] > 3:
+        if award_and_count[1] > 1:
             award = award_and_count[0]
             if award in filtered_potential_nominees:
                 filtered_potential_nominees[award].append(name)
@@ -49,15 +49,12 @@ def get_nominee_names(data_in, awards_list):
     return filtered_potential_nominees
 
 
-paths = ['data/gg2013.json']
+paths = ['data/gg2015.json']
 
 for path in paths:
 
     file = open(path)
     data = json.load(file)
 
-    nominees = get_nominee_names(data, ["Best Performance", "Best Actor", "Best Actress",
-                             "Best Supporting Actor", "Best Supporting Actress",
-                            "Best Director", "Best Original Score", "Best Screenplay"
-                             "Best Original Score", "Best Original Song"])
+    nominees = get_nominee_names(data)
     print(nominees)

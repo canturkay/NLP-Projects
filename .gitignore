@@ -4,3 +4,4 @@ Project1/data/gg2020.json
 Project1/data/gg2015.json
 Project1/data/gg2013.json
 .idea
+*.pyc
