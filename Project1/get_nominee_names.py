@@ -1,12 +1,12 @@
 import json
 import nltk
 # import spacy
-from Project1.regex import search_award
+from Project1.regex import search_person_award
 
 # nlp = spacy.load("en_core_web_sm")
 
 
-def get_nominee_names(data_in):
+def get_nominee_names(data):
     # Given a path to a json object of an array of tweets, returns the hosts of the golden globes for the year.
 
     file_first_names = open('data/names.json')
@@ -16,7 +16,6 @@ def get_nominee_names(data_in):
     potential_names = {}
     count = 0
 
-    data = [tweet['text'] for tweet in data_in]
     tweets = list(filter(lambda x: "nomin" in x, data))
 
     for tweet in tweets:
@@ -29,7 +28,7 @@ def get_nominee_names(data_in):
                     if name + ' ' + last_name in potential_names:
                         potential_names[name + ' ' + last_name][1] += 1
                     else:
-                        award = search_award(tweet)
+                        award = search_person_award(tweet)
                         if award:
                             potential_names[name + ' ' + last_name] = [award, 1]
 
@@ -52,12 +51,12 @@ def get_nominee_names(data_in):
     return filtered_potential_nominees
 
 
-paths = ['data/gg2015.json']
+paths = ['data/gg2013.json']
 
 for path in paths:
 
     file = open(path)
     data = json.load(file)
-
+    data = [tweet['text'] for tweet in data]
     nominees = get_nominee_names(data)
     print(nominees)

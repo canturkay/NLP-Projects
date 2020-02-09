@@ -52,6 +52,8 @@ class GGresponse:
         file = open(path)
         data = json.load(file)
 
+        self.data_text = [tweet["text"] for tweet in data]
+
         self.data = data
         self.get_hosts()
         self.get_award_names()
@@ -61,7 +63,7 @@ class GGresponse:
         
 
     def get_nominees(self):
-        self.nominee_people = get_nominee_names(self.data)
+        self.nominee_people = get_nominee_names(self.data_text)
         # self.nominee_movies = get_nominee_movies(self.data)
 
     def get_award_names(self):
