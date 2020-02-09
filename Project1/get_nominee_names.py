@@ -21,7 +21,7 @@ def get_nominee_names(data):
     for tweet in tweets:
         tags = nltk.pos_tag(nltk.word_tokenize(tweet))
         for i in range(len(tags) - 1):
-            if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names :
+            if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names:
                 name = tags[i][0]
                 if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
                     last_name = tags[i + 1][0]
@@ -31,17 +31,15 @@ def get_nominee_names(data):
                         award = search_person_award(tweet)
                         if award:
                             potential_names[name + ' ' + last_name] = [award, 1]
-
         count += 1
-        if count % 5000 == 0:
-            print(int(count/len(data)*100), "% Complete")
+        if count % 1000 == 0:
+            print(int(count/len(tweets)*100), "% Complete")
 
     filtered_potential_nominees = {}
     print(potential_names)
-    threshold = 1/100000
 
     for name, award_and_count in potential_names.items():
-        if award_and_count[1] > 1:
+        if award_and_count[1] > 0:
             award = award_and_count[0]
             if award in filtered_potential_nominees:
                 filtered_potential_nominees[award].append(name)
@@ -51,7 +49,7 @@ def get_nominee_names(data):
     return filtered_potential_nominees
 
 
-paths = ['data/gg2013.json']
+paths = ['data/gg2015.json']
 
 for path in paths:
 
