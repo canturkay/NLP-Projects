@@ -45,6 +45,8 @@ class GGresponse:
 
     awards = {}
 
+    dresses = {}
+
     def __init__(self, path):
         file = open(path)
         data = json.load(file)
@@ -69,6 +71,9 @@ class GGresponse:
 
     def get_presenters(self):
         self.presenters = get_presenters(self.data, self.award_names)
+
+    def get_best_dressed(self):
+        self.dresses = dress_sentiment(self.data)
 
     def get_award_nominees(self, award):
         if award in self.nominee_people:

@@ -3,49 +3,54 @@ import nltk
 from itertools import islice
 from textblob import TextBlob
 
-paths = ['data/gg2015.json', 'data/gg2013.json']
+paths = ['data/gg2015.json']
 
 
 file_first_names = open('data/names.json')
 first_names = json.load(file_first_names)
 
 def get_best_dressed(data):
-  #Given a dictionary of tweets, returns the best dressed person at the Golden Globes for the tweets' year.
-  #check nominee name instead of all
-  stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'GoldenGlobe']
-  data = [tweet['text'] for tweet in data]
-  potentialNames = {}
-  for tweet in data:
-    if 'dress' in tweet.lower():
-      tags = nltk.pos_tag(nltk.word_tokenize(tweet))
-      for i in range(len(tags) - 1):
-        name = ''
-        lastName = ''
-        if tags[i][1] == 'NNP' and tags[i][0] not in stopwords:
-          name = tags[i][0]
-        if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
-          lastName = tags[i + 1][0]
-        if len(name) != 0 and len(lastName) != 0:
-          blob = TextBlob(tweet)
-          sent = blob.sentences[0].sentiment.polarity
-          if name + ' ' + lastName in potentialNames:
-            potentialNames[name + ' ' +
-                             lastName] += sent
-            if(potentialNames[name + ' ' +
-                              lastName] == 150):
-              potentialNames = dict(
-                  sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
-              potentialNames = [*potentialNames]
-              return potentialNames
-                              
-          else:
-            if(name in first_names):
-              potentialNames[name + ' ' +
-                             lastName] = 10
-  potentialNames = dict(
-      sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
-  potentialNames = [*potentialNames]
-  return potentialNames
+      #Given a dictionary of tweets, returns the best dressed person at the Golden Globes for the tweets' year.
+      #check nominee name instead of all
+      stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'GoldenGlobe']
+      data = [tweet['text'] for tweet in data]
+      potentialNames = {}
+      count = 0
+
+      for tweet in data:
+            if 'dress' in tweet.lower() or 'look' in tweet.lower():
+                  tags = nltk.pos_tag(nltk.word_tokenize(tweet))
+                  for i in range(len(tags) - 1):
+                        name = ''
+                        lastName = ''
+                        if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names:
+                              name = tags[i][0]
+                              if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
+                                    lastName = tags[i + 1][0]
+                                    blob = TextBlob(tweet)
+                                    sent = blob.sentences[0].sentiment.polarity
+                                    if name + ' ' + lastName in potentialNames:
+                                          potentialNames[name + ' ' +
+                                                           lastName] += sent
+                                          # print(name + ' ' + lastName, potentialNames[name + ' ' + lastName])
+                                          if(potentialNames[name + ' ' +
+                                                            lastName] >= 150):
+                                                potentialNames = dict(
+                                                    sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
+                                                potentialNames = [*potentialNames]
+                                                return potentialNames
+                                    else:
+                                                potentialNames[name + ' ' +
+                                                           lastName] = 10
+
+            count += 1
+            if count % 5000 == 0:
+                print(int(count / len(data) * 100), "% Complete")
+
+      potentialNames = dict(
+          sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
+      potentialNames = [*potentialNames]
+      return potentialNames
 
 def bestDressed(potentialNames): 
   return potentialNames[0]
