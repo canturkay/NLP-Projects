@@ -91,8 +91,8 @@ movie_awards_regex = {"best screenplay - motion picture":
                     r'best foreign language',
                 "best motion picture - comedy or musical":
                     r'best motion picture .*comedy.*musical',
-                "best mini-series or motion picture made for [tv|television]":
-                    r'best mini.*series.*television',
+                "best mini-series or motion picture made for television":
+                    r'best mini.*series.*(tv|television)',
                 "best original score - motion picture":
                     r'best original score.*motion picture',
                 "best motion picture - drama":

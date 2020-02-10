@@ -6,7 +6,8 @@ from .get_award_names import get_award_names
 from .host import get_hosts
 from .presenter import get_presenters
 from .get_best_dressed import dress_sentiment
-from .regex import search_award
+from .regex import search_award, awards_regex
+from .get_award_keyword import get_person_nominees, get_presenters_new
 
 
 class GGresponse:
@@ -51,25 +52,36 @@ class GGresponse:
     first_names = []
 
     def __init__(self, path):
+        print("Loading data!")
         file = open(path)
         data = json.load(file)
 
+        print("Loading first names file!")
         file_first_names = open('data/names.json')
         self.first_names = json.load(file_first_names)
 
         self.data_text = [tweet["text"] for tweet in data]
 
         self.data = data
+        print("Getting hosts!")
         self.get_hosts()
+        print("Getting award names!")
         self.get_award_names()
+        print("Getting presenters!")
         self.get_presenters()
+        print("Getting nominees!")
         self.get_nominees()
+        print("Getting winners!")
+        self.get_winners()
+        print("Getting best dressed!")
         self.best_dressed()
-        
 
     def get_nominees(self):
         self.nominee_people = get_nominee_names(self.data_text)
         # self.nominee_movies = get_nominee_movies(self.data)
+
+    def get_winners(self):
+        pass
 
     def get_award_names(self):
         self.award_names = get_award_names(self.data)
@@ -78,7 +90,7 @@ class GGresponse:
         self.hosts = get_hosts(self.data)
 
     def get_presenters(self):
-        self.presenters = get_presenters(self.data, self.award_names)
+        self.presenters = get_presenters_new(self.data, self.award_names)
 
     def get_best_dressed(self):
         self.dresses = dress_sentiment(self.data)
@@ -90,15 +102,12 @@ class GGresponse:
             return self.nominee_movies[award]
 
     def get_awards(self):
-        for award in self.award_names:
+        for award in awards_regex.keys():
             self.awards[award] = {"presenters": self.presenters[award],
                                   "nominees": self.get_award_nominees(award),
-                                  "winner": self.winners}
+                                  "winner": self.winners[award]}
 
-        self.awards["Hosts"] = self.hosts
-
-
-print(search_award("best performance actress drama"))
+        self.awards["hosts"] = self.hosts
 
 gg = GGresponse("data/gg2013.json")
 print(gg.awards)

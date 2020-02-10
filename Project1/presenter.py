@@ -2,17 +2,6 @@ import json
 import nltk
 from itertools import islice
 
-paths = ['data/gg2015.json']
-
-Awards = ["Best Motion Picture", "Best Performance by an Actress", "Best Performance by an Actor",
-          "Best Performance by an Actress in a Supporting Role", "Best Performance by an Actor in a Supporting Role",
-          "Best Director", "Best Screenplay", "Best Original Score", "Best Original Song", "Best Television Series"]
-
-stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
-
-file_first_names = open('data/names.json')
-first_names = json.load(file_first_names)
-
 
 def get_presenter_for_award(tweets, award):
     # Given a dictionary of tweets and a specific award, returns the presenter of the award
@@ -65,10 +54,21 @@ def get_presenters(data, awards=Awards):
     return presenters
 
 
-for path in paths:
-    file = open(path)
-    data = json.load(file)
-    print(get_presenters(data))
+# paths = ['data/gg2015.json']
+#
+# Awards = ["Best Motion Picture", "Best Performance by an Actress", "Best Performance by an Actor",
+#           "Best Performance by an Actress in a Supporting Role", "Best Performance by an Actor in a Supporting Role",
+#           "Best Director", "Best Screenplay", "Best Original Score", "Best Original Song", "Best Television Series"]
+#
+# stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+#
+# file_first_names = open('data/names.json')
+# first_names = json.load(file_first_names)
+#
+# for path in paths:
+#     file = open(path)
+#     data = json.load(file)
+#     print(get_presenters(data))
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

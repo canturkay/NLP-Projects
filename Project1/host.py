@@ -2,11 +2,6 @@ import json
 import nltk
 from itertools import islice
 
-paths = ['data/gg2015.json', 'data/gg2013.json']
-
-  
-file_first_names = open('data/names.json')
-first_names = json.load(file_first_names)
 
 def get_hosts(data): 
   #Given a dictionary of tweets, returns the hosts of the golden globes for the year the tweets were tweeted.
@@ -50,11 +45,16 @@ def get_hosts(data):
   return hosts
 
 
-datas = []
-for path in paths:
-  file = open(path)
-  data = json.load(file)
-  print(get_hosts(data))
+# paths = ['data/gg2015.json', 'data/gg2013.json']
+#
+# file_first_names = open('data/names.json')
+# first_names = json.load(file_first_names)
+#
+# datas = []
+# for path in paths:
+#   file = open(path)
+#   data = json.load(file)
+#   print(get_hosts(data))
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:
 #   for line in f_in:

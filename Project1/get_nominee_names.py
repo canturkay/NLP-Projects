@@ -46,13 +46,13 @@ def get_nominee_names(data):
 
     return filtered_potential_nominees
 
-
-paths = ['data/gg2015.json']
-
-for path in paths:
-
-    file = open(path)
-    data = json.load(file)
-    data = [tweet['text'] for tweet in data]
-    nominees = get_nominee_names(data)
-    print(nominees)
+#
+# paths = ['data/gg2015.json']
+#
+# for path in paths:
+#
+#     file = open(path)
+#     data = json.load(file)
+#     data = [tweet['text'] for tweet in data]
+#     nominees = get_nominee_names(data)
+#     print(nominees)
