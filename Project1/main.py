@@ -86,15 +86,17 @@ class GGresponse:
         s = ""
         for award in awards_regex.keys():
             s += "Award: " + ' '.join(x.capitalize() for x in award.split()) + "\n"
-            s += "Presenters: " + ','.join(x for x in (self.presenters[award] if award in
+            s += "Presenters: " + ', '.join(x for x in (self.presenters[award] if award in
                                                                                  self.presenters.keys() else [])) + "\n"
-            s += "Nominees: " + ','.join(x for x in (self.get_award_nominees(award) if
+            s += "Nominees: " + ', '.join(x for x in (self.get_award_nominees(award) if
                                                          self.get_award_nominees(award) else [])) + "\n"
             s += "Winner: " + (self.winners[award] if award in self.winners.keys() else "Not Found") + "\n\n"
 
         s += "Best Dressed: " + self.dresses["best"] + "\n"
         s += "Worst Dressed: " + self.dresses["worst"] + "\n"
-        s += "Most Controversially Dressed: " + self.dresses["controversial"] + "\n"
+        s += "Most Controversially Dressed: " + self.dresses["controversial"] + "\n\n"
+
+        s += "Fetched Award Names: " + ', '.join(x for x in self.award_names) + "\n"
         return s
 
     def get_nominees(self):
@@ -104,13 +106,15 @@ class GGresponse:
 
     def get_winners(self):
         self.winners = get_person_winners(self.data_text, self.first_names)
-        for award, winner in self.winners.items():
-            if not winner:
-                nominees = self.nominee_people[award]
-                print(nominees)
+        for award in awards_regex.keys():
+            if award not in self.winners.keys():
+                nominees = self.nominee_people[award] if award in self.nominee_people.keys() else None
                 if nominees and len(nominees) == 1:
+                    print(award, nominees[0])
                     self.winners[award] = nominees[0]
             else:
+                winner = self.winners[award]
+                print(award, winner)
                 if award not in self.nominee_people.keys():
                     self.nominee_people[award] = [winner]
                 elif winner not in self.nominee_people[award]:
@@ -157,4 +161,4 @@ class GGresponse:
 
 
 gg = GGresponse("data/gg2013.json")
-print(gg.awards)
+# print(gg.awards)
