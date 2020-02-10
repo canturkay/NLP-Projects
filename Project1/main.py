@@ -38,6 +38,8 @@ class GGresponse:
                         ]
     data = {}
 
+    keywords = []
+
     award_names = []
     hosts = []
     presenters = {}
@@ -62,6 +64,9 @@ class GGresponse:
         self.first_names = json.load(file_first_names)
 
         self.data_text = [tweet["text"] for tweet in data]
+
+        self.keywords = ["get", "got", "win", "won", "host", "present", "nomin", "look", "dress", "want", "wish",
+                         "hope", "should"]
 
         self.data = data
         print("Getting hosts!")
@@ -110,11 +115,11 @@ class GGresponse:
             if award not in self.winners.keys():
                 nominees = self.nominee_people[award] if award in self.nominee_people.keys() else None
                 if nominees and len(nominees) == 1:
-                    print(award, nominees[0])
+                    # print(award, nominees[0])
                     self.winners[award] = nominees[0]
             else:
                 winner = self.winners[award]
-                print(award, winner)
+                # print(award, winner)
                 if award not in self.nominee_people.keys():
                     self.nominee_people[award] = [winner]
                 elif winner not in self.nominee_people[award]:
@@ -160,5 +165,5 @@ class GGresponse:
         self.awards["bestDressed"] = self.dresses
 
 
-gg = GGresponse("data/gg2013.json")
+gg = GGresponse("data/gg2015.json")
 # print(gg.awards)

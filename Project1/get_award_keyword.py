@@ -57,7 +57,7 @@ def get_person_nominees(data, first_names):
     potential_names = {}
     count = 0
 
-    keywords = ["nomin", "for", "win", "get"]
+    keywords = ["nomin", "win", "get"]
 
     tweets = []
     for line in data:
@@ -77,12 +77,13 @@ def get_person_nominees(data, first_names):
                     last_name = tags[i + 1]
                     if name + ' ' + last_name in potential_names:
                         potential_names[name + ' ' + last_name][1] += 1
+
                     else:
                         award = search_person_award(tweet)
                         if award:
                             potential_names[name + ' ' + last_name] = [award, 1]
         count += 1
-        if count % 1000 == 0:
+        if count % 3000 == 0:
             print(int(count / len(tweets) * 100), "% Complete")
 
     filtered_potential_nominees = {}
