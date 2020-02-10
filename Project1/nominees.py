@@ -3,12 +3,14 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from imdb import IMDb
+import nltk
+import random
+import re
 
 
 def all_movies(year):
     film_titles = set()
     my_regex = "\(.*\)|\s-\s.*"
-    nationalities = ['American', 'British']
     html = requests.get('https://en.wikipedia.org/wiki/List_of_%s_films_of_%s' % ('American', str(int(year)-1)))
     b = BeautifulSoup(html.text, 'lxml')
     # print(b.prettify())
@@ -64,17 +66,30 @@ def category(film_title):
             return 'Comedy'
 
 
+def neg(text):
+    stoplist = ['not', 'n\'t', 'should', 'wish', 'want', 'hope']
+    for w in stoplist:
+        if w in text:
+            return True
+    return False
+
 def get_nominee_films(data, year):
-    keywords = ['nomin']
-    noms = [tweet['text'] for tweet in data if all(w in tweet['text'] for w in keywords)]
+    keywords = ['nomin', 'won', 'win', 'best']
+    noms = [tweet['text'] for tweet in data if any(w in tweet['text'] for w in keywords)]
 
     all_films = all_movies(year)
     drama_films = {}
     com_films = {}
     anim_films = {}
+    song_films = {}
+    score_films = {}
+    foreign_films = {}
+    screenplay = {}
     for n in noms:
+        if neg(n):
+            continue
         if not any(w in n for w in ['song', 'foreign', 'tv', 'show', 'series', 'actress', 'actor',
-                                    'supporting', 'original', 'performance',
+                                    'supporting', 'original', 'performance', 'screenplay',
                                     'score', 'director', 'television']):
             films = [f for f in all_films if f in n]
             for film in films:
@@ -94,24 +109,140 @@ def get_nominee_films(data, year):
                         anim_films[film] += 1
                     else:
                         anim_films[film] = 1
-    return sorted(drama_films, key=drama_films.get, reverse=True)[:6], \
-           sorted(com_films, key=com_films.get, reverse=True)[:6],\
-           sorted(anim_films, key=anim_films.get, reverse=True)[:6]
+        elif "song" in n:
+            films = [f for f in all_films if f in n]
+            for film in films:
+                if film in song_films:
+                    song_films[film] += 1
+                else:
+                    song_films[film] = 1
+        elif "score" in n:
+            films = [f for f in all_films if f in n]
+            for film in films:
+                if film in score_films:
+                    score_films[film] += 1
+                else:
+                    score_films[film] = 1
+        elif "foreign language" in n:
+            films = [f for f in all_films if f in n]
+            for film in films:
+                if film in foreign_films:
+                    foreign_films[film] += 1
+                else:
+                    foreign_films[film] = 1
+        elif "screenplay" in n:
+            films = [f for f in all_films if f in n]
+            for film in films:
+                if film in screenplay:
+                    screenplay[film] += 1
+                else:
+                    screenplay[film] = 1
+    return sorted(drama_films, key=drama_films.get, reverse=True)[:5], \
+           sorted(com_films, key=com_films.get, reverse=True)[:5],\
+           sorted(anim_films, key=anim_films.get, reverse=True)[:5],\
+           sorted(song_films, key=song_films.get, reverse=True)[:5],\
+           sorted(score_films, key=score_films.get, reverse=True)[:5],\
+           sorted(foreign_films, key=foreign_films.get, reverse=True)[:5],\
+           sorted(screenplay, key=screenplay.get, reverse=True)[:5]
 
-# file = open('data/gg2013.json')
-# data = json.load(file)
 
+def get_nominee_tv(data):
+    file_first_names = open('data/names.json')
+    first_names = json.load(file_first_names)
+
+    stopwords = set(['RT', 'golden', 'Golden', 'globes', 'Globes', 'goldenglobes', '@goldenglobes', '@',
+                     'best', 'wins', '#', 'congrats',
+                 'congratulations', 'actor', 'actress', 'Actor', 'Actress', 'globe', 'Globe' 'winning'])
+
+    potential_names = {'best mini-series or motion picture made for television': {},
+                       'best television series - drama': {},
+                       'best television series - comedy or musical': {}}
+    count = 0
+
+    def valid_word(w):
+        if len(w) > 1:
+            return w[0].isupper() and w.lower() not in stopwords and w[1].islower()
+        return True
+
+    keywords = ['nomin', 'won', 'win', 'best']
+    tweets = [tweet['text'] for tweet in data if any(w in tweet['text'] for w in keywords)]
+
+    for tweet in tweets:
+        if neg(tweet):
+            continue
+        if any(w in tweet for w in ['song', 'foreign', 'actress', 'actor', 'Actor', 'Actress'
+                                    'supporting', 'original', 'performance', 'screenplay',
+                                    'score', 'director']):
+            continue
+        pattern = re.compile(r'(?i)mini-series|mini series|((tv|television) (motion picture|movie))')
+        if re.search(pattern, tweet):
+            award = 'best mini-series or motion picture made for television'
+        elif re.search(r'(?i)(tv|television) (show|series)', tweet):
+            if 'drama' in tweet or ('comedy' not in tweet and 'musical' not in tweet):
+                award = 'best television series - drama'
+            elif 'comedy' in tweet or 'musical' in tweet and 'drama' not in tweet:
+                award = 'best television series - comedy or musical'
+            else:
+                award = 'best television series - drama' if random.random() >= 0.5 \
+                    else 'best television series - comedy or musical'
+        else:
+            continue
+        # print(award, tweet)
+        tags = nltk.pos_tag(nltk.word_tokenize(tweet))
+        for i in range(len(tags) - 1):
+            if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] not in first_names:
+                w = tags[i][0]
+                title = []
+                i = 0
+                while w[0].isupper() and w not in stopwords and i < len(tags):
+                    w = tags[i][0]
+                    title.append(w)
+                    i += 1
+                if title:
+                    for word in title:
+                        if word.lower() in stopwords:
+                            continue
+                    name = ' '.join(title)
+                    if name in potential_names[award]:
+                        potential_names[award][name] += 1
+                    else:
+                        potential_names[award][name] = 1
+        count += 1
+        if count % 1000 == 0:
+            print(int(count / len(tweets) * 100), "% Complete")
+
+    for award in potential_names:
+        potential_names[award] = sorted(potential_names[award], key=potential_names[award].get, reverse=True)[:5]
+
+    return potential_names
+
+
+file = open('data/gg2013.json')
+data = json.load(file)
+
+'''
 data = list()
 
 with open('data/gg2020.json', 'r') as f_in:
     for line in f_in:
         data.append(json.loads(line))
+'''
 
-nominees = get_nominee_films(data, '2020')
+print(get_nominee_tv(data))
+'''
+nominees = get_nominee_films(data, '2013')
 print("Best Motion Picture - Drama")
 print(nominees[0])
 print("Best Motion Picture - Comedy or Musical")
 print(nominees[1])
 print("Best Animated Film")
 print(nominees[2])
+print("Best Original Song")
+print(nominees[3])
+print("Best Original Score")
+print(nominees[4])
+print("Best Foreign Language Film")
+print(nominees[5])
+'''
+
 
