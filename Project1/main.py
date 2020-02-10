@@ -99,7 +99,7 @@ class GGresponse:
 
     def get_nominees(self):
         self.nominee_people = get_person_nominees(self.data_text, self.first_names)
-        print(self.nominee_people)
+        # print(self.nominee_people)
         # self.nominee_movies = get_nominee_movies(self.data)
 
     def get_winners(self):
@@ -107,21 +107,27 @@ class GGresponse:
         for award, winner in self.winners.items():
             if not winner:
                 nominees = self.nominee_people[award]
+                print(nominees)
                 if nominees and len(nominees) == 1:
                     self.winners[award] = nominees[0]
-        print(self.winners)
+            else:
+                if award not in self.nominee_people.keys():
+                    self.nominee_people[award] = [winner]
+                elif winner not in self.nominee_people[award]:
+                    self.nominee_people[award].append(winner)
+        # print(self.winners)
 
     def get_award_names(self):
         self.award_names = get_award_names(self.data_text)
-        print(self.award_names)
+        # print(self.award_names)
 
     def get_hosts(self):
         self.hosts = get_hosts(self.data_text, self.first_names)
-        print(self.hosts)
+        # print(self.hosts)
 
     def get_presenters(self):
         self.presenters = get_presenters_new(self.data_text, self.first_names)
-        print(self.presenters)
+        # print(self.presenters)
 
     def get_best_dressed(self):
         self.dresses = dress_sentiment(self.data_text, self.first_names)
