@@ -37,6 +37,8 @@ class GGresponse:
                         "best performance by an actor in a television series - comedy or musical"
                         ]
     data = {}
+    data_text = []
+    tweets = []
 
     keywords = []
 
@@ -66,7 +68,13 @@ class GGresponse:
         self.data_text = [tweet["text"] for tweet in data]
 
         self.keywords = ["get", "got", "win", "won", "host", "present", "nomin", "look", "dress", "want", "wish",
-                         "hope", "should"]
+                         "hope", "should", "best"]
+
+        for line in self.data_text:
+            if any(keyword in line.lower() for keyword in self.keywords):
+                self.tweets.append(line)
+
+        #print(len(self.tweets)/len(self.data_text)*100)
 
         self.data = data
         print("Getting hosts!")
@@ -105,12 +113,12 @@ class GGresponse:
         return s
 
     def get_nominees(self):
-        self.nominee_people = get_person_nominees(self.data_text, self.first_names)
+        self.nominee_people = get_person_nominees(self.tweets, self.first_names)
         # print(self.nominee_people)
         # self.nominee_movies = get_nominee_movies(self.data)
 
     def get_winners(self):
-        self.winners = get_person_winners(self.data_text, self.first_names)
+        self.winners = get_person_winners(self.tweets, self.first_names)
         for award in awards_regex.keys():
             if award not in self.winners.keys():
                 nominees = self.nominee_people[award] if award in self.nominee_people.keys() else None
@@ -127,19 +135,19 @@ class GGresponse:
         # print(self.winners)
 
     def get_award_names(self):
-        self.award_names = get_award_names(self.data_text)
+        self.award_names = get_award_names(self.tweets)
         # print(self.award_names)
 
     def get_hosts(self):
-        self.hosts = get_hosts(self.data_text, self.first_names)
+        self.hosts = get_hosts(self.tweets, self.first_names)
         # print(self.hosts)
 
     def get_presenters(self):
-        self.presenters = get_presenters_new(self.data_text, self.first_names)
+        self.presenters = get_presenters_new(self.tweets, self.first_names)
         # print(self.presenters)
 
     def get_best_dressed(self):
-        self.dresses = dress_sentiment(self.data_text, self.first_names)
+        self.dresses = dress_sentiment(self.tweets, self.first_names)
 
     def get_award_nominees(self, award):
         if award in self.nominee_people:
