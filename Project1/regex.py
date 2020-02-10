@@ -4,7 +4,7 @@ awards_regex = {"best screenplay - motion picture":
                 "best director - motion picture":
                     r'best director.*motion picture',
                 "best performance by an actress in a television series - comedy or musical":
-                    r'best performance.*actress.*[tv|television] series.*comedy.*musical',
+                    r'best performance.*actress.*(tv|television) series.*comedy.*musical',
                 "best foreign language film":
                     r'best foreign language',
                 "best performance by an actor in a supporting role in a motion picture":
@@ -13,12 +13,12 @@ awards_regex = {"best screenplay - motion picture":
                     r'best performance.*actress.*supporting.*series.*motion picture',
                 "best motion picture - comedy or musical":
                     r'best motion picture .*comedy.*musical',
-                "best mini-series or motion picture made for [tv|television]":
-                    r'best mini.*series.*television',
+                "best mini-series or motion picture made for television":
+                    r'best mini.*series.*(tv|television)',
                 "best original score - motion picture":
                     r'best original score.*motion picture',
                 "best performance by an actress in a television series - drama":
-                    r'best performance.*actress.*[tv|television].*drama',
+                    r'best performance.*actress.*(tv|television).*drama',
                 "best performance by an actress in a motion picture - drama":
                     r'bet performance.*actress,*motion picture.*drama',
                 "best performance by an actor in a motion picture - comedy or musical":
@@ -26,15 +26,15 @@ awards_regex = {"best screenplay - motion picture":
                 "best motion picture - drama":
                     r'best motion picture.*drama',
                 "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television":
-                    r'best performance.*actor.*supporting.*series.*motion picture.*made for [tv|television]',
+                    r'best performance.*actor.*supporting.*series.*motion picture.*made for (tv|television)',
                 "best performance by an actress in a supporting role in a motion picture":
                     r'best performance.*actress.*supporting.*motion picture',
                 "best television series - drama":
                     r'best [tv|television] series.*drama',
                 "best performance by an actor in a mini-series or motion picture made for television":
-                    r'best performance.*actor.*series.*motion picture.*made for[tv|television]',
+                    r'best performance.*actor.*series.*motion picture.*made for(tv|television)',
                 "best performance by an actress in a mini-series or motion picture made for television":
-                    r'best performance.*actress.*series.*motion picture.*made for [tv|television]',
+                    r'best performance.*actress.*series.*motion picture.*made for (tv|television)',
                 "best animated feature film":
                     r'best animated feature film',
                 "best original song - motion picture":
@@ -44,9 +44,9 @@ awards_regex = {"best screenplay - motion picture":
                 "best television series - comedy or musical":
                     r'best [tv|television] series.*comedy.*musical',
                 "best performance by an actor in a television series - drama":
-                    r'best performance.*actor.*[tv|television] series.*drama',
+                    r'best performance.*actor.*(tv|television) series.*drama',
                 "best performance by an actor in a television series - comedy or musical":
-                    r'best performance.*actor.*[tv|television] series.*comedy.*musical'
+                    r'best performance.*actor.*(tv|television) series.*comedy.*musical'
                 }
 
 person_awards_regex = {"best screenplay - motion picture":

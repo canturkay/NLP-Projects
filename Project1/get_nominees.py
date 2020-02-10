@@ -75,8 +75,8 @@ def strip_punctuation(w):
 
 def get_movies(tweets, pattern):
     film_titles = {}
-    for tweet in tweets:
-        text = tweet['text']
+    for text in tweets:
+        # text = tweet['text']
         if neg(text):
             continue
         if re.search(pattern, text):
@@ -117,11 +117,22 @@ def get_nominee_films(data):
         print(award, nomins)
     return nominees_dict
 
-data = list()
+# data = list()
+#
+# with open('data/gg2020.json', 'r') as f_in:
+#     for line in f_in:
+#         data.append(json.loads(line))
+#
+# nominees = get_nominee_films(data)
 
-with open('data/gg2020.json', 'r') as f_in:
-    for line in f_in:
-        data.append(json.loads(line))
 
-nominees = get_nominee_films(data)
+paths = ['data/gg2015.json']
+
+for path in paths:
+    file = open(path)
+    data = json.load(file)
+    data = [tweet['text'] for tweet in data]
+    nominees = get_nominee_films(data)
+    print(nominees)
+
 

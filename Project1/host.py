@@ -55,8 +55,8 @@ for path in paths:
   file = open(path)
   data = json.load(file)
   print(get_hosts(data))
-data = list()
-with open('data/gg2020.json', 'r') as f_in:
-  for line in f_in:
-    data.append(json.loads(line))
-print(get_hosts(data))
+# data = list()
+# with open('data/gg2020.json', 'r') as f_in:
+#   for line in f_in:
+#     data.append(json.loads(line))
+# print(get_hosts(data))

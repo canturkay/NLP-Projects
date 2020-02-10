@@ -48,9 +48,14 @@ class GGresponse:
 
     dresses = {}
 
+    first_names = []
+
     def __init__(self, path):
         file = open(path)
         data = json.load(file)
+
+        file_first_names = open('data/names.json')
+        self.first_names = json.load(file_first_names)
 
         self.data_text = [tweet["text"] for tweet in data]
 
@@ -59,7 +64,7 @@ class GGresponse:
         self.get_award_names()
         self.get_presenters()
         self.get_nominees()
-        self.best_dressed
+        self.best_dressed()
         
 
     def get_nominees(self):
@@ -95,3 +100,5 @@ class GGresponse:
 
 print(search_award("best performance actress drama"))
 
+gg = GGresponse("data/gg2013.json")
+print(gg.awards)
