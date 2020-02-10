@@ -3,8 +3,10 @@ import nltk
 from itertools import islice
 
 
-def get_presenter_for_award(tweets, award):
-    # Given a dictionary of tweets and a specific award, returns the presenter of the award
+def get_presenter_for_award(tweets, award, first_names):
+    # Given a dictionary of tweets and a specific award, returns the presenter of the
+    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+
     potentialNames = {}
     for tweet in tweets:
         if 'present' in tweet.lower() and award in tweet:
@@ -41,16 +43,17 @@ def get_presenter_for_award(tweets, award):
         return
 
 
-def get_presenters(data, awards=Awards):
+def get_presenters(data, first_names, awards=[]):
+    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
     # Given a path to a json object of an array of tweets and award categories, returns the presenter of all awards of the golden globes for the year as dictionaries.
-    data = [tweet['text'] for tweet in data]
+    # data = [tweet['text'] for tweet in data]
     presenters = {}
     for award in awards:
         tags = nltk.pos_tag(nltk.word_tokenize(award))
         for tag in tags:
             stopwords.append(tag[0])
     for award in awards:
-        presenters[award] = get_presenter_for_award(data, award)
+        presenters[award] = get_presenter_for_award(data, award, first_names)
     return presenters
 
 
@@ -60,7 +63,7 @@ def get_presenters(data, awards=Awards):
 #           "Best Performance by an Actress in a Supporting Role", "Best Performance by an Actor in a Supporting Role",
 #           "Best Director", "Best Screenplay", "Best Original Score", "Best Original Song", "Best Television Series"]
 #
-# stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+#
 #
 # file_first_names = open('data/names.json')
 # first_names = json.load(file_first_names)

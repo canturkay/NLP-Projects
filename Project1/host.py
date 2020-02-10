@@ -3,10 +3,10 @@ import nltk
 from itertools import islice
 
 
-def get_hosts(data): 
+def get_hosts(data, first_names):
   #Given a dictionary of tweets, returns the hosts of the golden globes for the year the tweets were tweeted.
   stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
-  data = [tweet['text'] for tweet in data]
+  # data = [tweet['text'] for tweet in data]
   potentialNames = {}
   for tweet in data:
     if 'host' in tweet.lower():

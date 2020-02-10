@@ -1,22 +1,23 @@
 import nltk
 import json
+from nltk.tokenize import RegexpTokenizer
 
 
 def get_award_name(tags):
     i = 0
 
-    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'GoldenGlobe']
 
-    while i < len(tags) - 2 and tags[i][0] != "Best":
+    while i < len(tags) - 2 and tags[i] != "Best":
         i += 1
 
-    if tags[i][0] == "Best":
+    if tags[i] == "Best":
         award_name = "Best"
         i += 1
-        while tags[i][1] == "NNP" and i < len(tags) - 1:
-            if tags[i][0] in stopwords:
+        while tags[i][0].isupper() and i < len(tags) - 1:
+            if tags[i] in stopwords:
                 break
-            award_name += " " + tags[i][0]
+            award_name += " " + tags[i]
             i += 1
         if award_name != "Best":
             # print(award_name)
@@ -27,13 +28,22 @@ def get_award_name(tags):
         return None
 
 
-def get_potential_award_names(tweets_unfiltered):
-    tweets = list(filter(lambda x: "best" in x["text"].lower(), tweets_unfiltered))
+def get_potential_award_names(data):
     count = 0
     awards = {}
 
+    # stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'Best']
+    keywords = ["best"]
+
+    tweets = []
+    for line in data:
+        if any(keyword in line.lower() for keyword in keywords):
+            tweets.append(line)
+
+    tokenizer = RegexpTokenizer(r'\w+')
+
     for tweet in tweets:
-        tags = nltk.pos_tag(nltk.word_tokenize(tweet["text"]))
+        tags = tokenizer.tokenize(tweet)
         # targets = ["NNP", "NN"]
         # print(tags)
         award_name = get_award_name(tags)   # list(filter(lambda x: x[1] in targets, tags)))
@@ -43,7 +53,7 @@ def get_potential_award_names(tweets_unfiltered):
             else:
                 awards[award_name] = 1
         count += 1
-        if count % 1000 == 0:
+        if count % 5000 == 0:
             print(int(count/len(tweets)*100), "% Complete")
 
     # awards_file = open("processed_data/awards.json", "w+")
@@ -58,7 +68,7 @@ def parse_awards(awards):
 
     awards_final = []
     # print(awards)
-    awards_threshold = .1
+    awards_threshold = .2
 
     for award, count in awards.items():
         if count > len(awards) * awards_threshold:
@@ -71,9 +81,7 @@ def get_award_names(data_in):
     potential_awards = get_potential_award_names(data_in)
     return parse_awards(potential_awards)
 
-
-
-
-file = open('data/gg2015.json', encoding="cp866")
-data = json.load(file)
+# file = open('data/gg2015.json', encoding="cp866")
+# data = json.load(file)
+# print(get_award_names([x["text"] for x in data]))
 

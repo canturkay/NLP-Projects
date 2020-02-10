@@ -3,18 +3,11 @@ import nltk
 from itertools import islice
 from textblob import TextBlob
 
-paths = ['data/gg2015.json']
-
-
-file_first_names = open('data/names.json')
-first_names = json.load(file_first_names)
-
-
-def get_best_dressed(data):
+def get_best_dressed(data, first_names):
       # Given a dictionary of tweets, returns the best dressed person at the Golden Globes for the tweets' year.
       # check nominee name instead of all
       stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'GoldenGlobe']
-      data = [tweet['text'] for tweet in data]
+      # data = [tweet['text'] for tweet in data]
       potentialNames = {}
       count = 0
 
@@ -63,20 +56,29 @@ def controversialDressed(potentialNames):
   return potentialNames[middle]
 
 
-def dress_sentiment(data): 
+def dress_sentiment(data, first_names):
   #Given a list of tweets, finds the best, worst and most controversially dressed people at the Golden Globes for the year
-  candidates = get_best_dressed(data)
+  candidates = get_best_dressed(data, first_names)
   sentiment = {}
   sentiment['best'] = bestDressed(candidates)
   sentiment['worst'] = worstDressed(candidates)
   sentiment['controversial'] = controversialDressed(candidates)
   return sentiment
 
-datas = []
-for path in paths:
-  file = open(path)
-  data = json.load(file)
-  candidates = get_best_dressed(data)
-  print('Best dressed:', bestDressed(candidates))
-  print('Worst dressed:', worstDressed(candidates))
-  print('Most controversially dressed:', controversialDressed(candidates))
+
+
+# paths = ['data/gg2015.json']
+#
+#
+# file_first_names = open('data/names.json')
+# first_names = json.load(file_first_names)
+#
+#
+# datas = []
+# for path in paths:
+#   file = open(path)
+#   data = json.load(file)
+#   candidates = get_best_dressed(data)
+#   print('Best dressed:', bestDressed(candidates))
+#   print('Worst dressed:', worstDressed(candidates))
+#   print('Most controversially dressed:', controversialDressed(candidates))
