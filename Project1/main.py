@@ -1,13 +1,14 @@
 import json
 
-from get_nominee_names import get_nominee_names
-from  get_award_names import get_award_names
-from  host import get_hosts
-from  presenter import get_presenters
-from  get_best_dressed import dress_sentiment
-from  regex import search_award, awards_regex
-from  get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
-from  winners import get_winners
+from Project1.get_nominee_names import get_nominee_names
+from  Project1.get_award_names import get_award_names
+from  Project1.host import get_hosts
+from  Project1.presenter import get_presenters
+from  Project1.get_best_dressed import dress_sentiment
+from  Project1.regex import search_award, awards_regex
+from Project1.get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
+from Project1.winners import get_winners
+from Project1.speech import speech_sentiment
 
 print("Running!")
 
@@ -56,6 +57,8 @@ class GGresponse:
 
     first_names = []
 
+    speech = {}
+
     def __init__(self, path):
         print("Loading data!")
         file = open(path)
@@ -81,12 +84,12 @@ class GGresponse:
         self.get_hosts()
         print("Getting award names!")
         self.get_award_names()
-        print("Getting presenters!")
-        self.get_presenters()
         print("Getting nominees!")
         self.get_nominees()
         print("Getting winners!")
         self.get_winners()
+        print("Getting presenters!")
+        self.get_presenters()
         print("Getting best dressed!")
         self.get_best_dressed()
         print("Generating the awards object!")
@@ -108,6 +111,9 @@ class GGresponse:
         s += "Best Dressed: " + self.dresses["best"] + "\n"
         s += "Worst Dressed: " + self.dresses["worst"] + "\n"
         s += "Most Controversially Dressed: " + self.dresses["controversial"] + "\n\n"
+
+        s += "Best Speech: " + self.speech["best"] + "\n"
+        s += "Worst Speech: " + self.speech["worst"] + "\n\n"
 
         s += "Fetched Award Names: " + ', '.join(x for x in self.award_names) + "\n"
         return s
@@ -145,15 +151,18 @@ class GGresponse:
         # print(self.hosts)
 
     def get_presenters(self):
-        #self.presenters = get_presenters(self.tweets, self.first_names)
-        self.presenters = get_presenters_new(self.tweets, self.first_names)
-        for award, presenters in self.presenters.items():
-            if len(presenters) > 2:
-                self.presenters[award] = presenters[:2]
+        self.presenters = get_presenters(self.tweets, self.first_names, self.winners)
+        # self.presenters = get_presenters_new(self.tweets, self.first_names, self.winners)
+        # for award, presenters in self.presenters.items():
+        #     if presenters and len(presenters) > 2:
+        #         self.presenters[award] = presenters[:2]
         print(self.presenters)
 
     def get_best_dressed(self):
         self.dresses = dress_sentiment(self.tweets, self.first_names)
+
+    def get_speeches(self):
+        self.speech = speech_sentiment(self.tweets, self.first_names)
 
     def get_award_nominees(self, award):
         if award in self.nominee_people:
@@ -163,10 +172,11 @@ class GGresponse:
 
     def remove_presenters_from_nominees(self):
         for award, presenters in self.presenters.items():
-            for presenter in presenters:
-                if award in self.nominee_people:
-                    if presenter in self.nominee_people[award]:
-                        self.nominee_people[award].remove(presenter)
+            if presenters:
+                for presenter in presenters:
+                    if award in self.nominee_people:
+                        if presenter in self.nominee_people[award]:
+                            self.nominee_people[award].remove(presenter)
 
     def get_awards(self):
         for award in awards_regex.keys():
@@ -177,6 +187,7 @@ class GGresponse:
         self.awards["hosts"] = self.hosts
         self.awards["awardNames"] = self.award_names
         self.awards["bestDressed"] = self.dresses
+        self.awards["speeches"] = self.speech
 
 
 gg = GGresponse("data/gg2013.json")

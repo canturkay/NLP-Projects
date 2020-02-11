@@ -51,21 +51,13 @@ def analyze_speeches(data, first_names = first_names):
                             else:
                                   potentialNames[name + ' ' + lastName] = 1
           count += 1
-          if count % 100 == 0:
+          if count % 500 == 0:
             print(int(count / len(tweets) * 100), "% Complete")
 
       potentialNames = dict(
           sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
       potentialNames = [*potentialNames]
       return potentialNames
-
-
-def bestSpeech(potentialNames):
-  return potentialNames[0]
-
-
-def worstSpeech(potentialNames):
-  return potentialNames[len(potentialNames) - 1]
 
 def speech_sentiment(data, first_names = first_names):
   #Given a list of tweets, finds the best, worst and most controversially dressed people at the Golden Globes for the year
@@ -76,17 +68,17 @@ def speech_sentiment(data, first_names = first_names):
   return sentiment
 
 
-paths = ['data/gg2015.json']#, 'data/gg2013.json']
-
-
-
-
-for path in paths:
-  file = open(path)
-  data = json.load(file)
-  tweets = [tweet["text"] for tweet in data]
-  candidates = speech_sentiment(tweets)
-  print(candidates)
+# paths = ['data/gg2015.json']#, 'data/gg2013.json']
+#
+#
+#
+#
+# for path in paths:
+#   file = open(path)
+#   data = json.load(file)
+#   tweets = [tweet["text"] for tweet in data]
+#   candidates = speech_sentiment(tweets)
+#   print(candidates)
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:
