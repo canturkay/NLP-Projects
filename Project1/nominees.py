@@ -213,22 +213,22 @@ def get_nominee_tv(data):
     return potential_names
 '''
 
-file = open('data/gg2013.json')
-data = json.load(file)
-
-
-data = list()
-
-with open('data/gg2020.json', 'r') as f_in:
-    for line in f_in:
-        data.append(json.loads(line))
-
-
-# print(get_nominee_tv(data))
-
-winners, nominees = get_nominee_films(data, '2020')
-print(winners)
-print(nominees)
+# file = open('data/gg2013.json')
+# data = json.load(file)
+#
+#
+# data = list()
+#
+# with open('data/gg2020.json', 'r') as f_in:
+#     for line in f_in:
+#         data.append(json.loads(line))
+#
+#
+# # print(get_nominee_tv(data))
+#
+# winners, nominees = get_nominee_films(data, '2020')
+# print(winners)
+# print(nominees)
 
 
 

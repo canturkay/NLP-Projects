@@ -65,20 +65,22 @@ def get_people_noms(data, first_names, presenters):
             stopwords.append(tag[0])
     count = 0
     for award in person_awards_regex.keys():
-      if award != 'cecil b. de mille award':
-          nominees[award] = get_person_noms_for_award(
-              data, award, first_names, presenters[award])
+      if award != 'cecil b. demille award':
+          presenters_in = presenters[award] if award in presenters.keys() else []
+          nominees[award] = get_person_noms_for_award(data, award, first_names, presenters_in)
+      else:
+          nominees[award] = []
       count += 1
       print(int(count / len(person_awards_regex.keys()) * 100), "% Complete")
     return nominees
-
-paths = ['data/gg2013.json']
-
-for path in paths:
-    file = open(path)
-    data = json.load(file)
-    data_text = [tweet["text"] for tweet in data]
-    print(get_people_noms(data_text, first_names))
+#
+# paths = ['data/gg2013.json']
+#
+# for path in paths:
+#     file = open(path)
+#     data = json.load(file)
+#     data_text = [tweet["text"] for tweet in data]
+#     print(get_people_noms(data_text, first_names))
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

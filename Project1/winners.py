@@ -155,23 +155,23 @@ def get_nominees(data):
         print(int(count / len(awards_regex.keys()) * 100), "% Complete")
     return nomins
 
-paths = ['data/gg2013.json', 'data/gg2015.json']#, 'data/gg2013.json']
-
-
-for path in paths:
-     file = open(path)
-     data = json.load(file)
-     tweets = [tweet["text"] for tweet in data]
-     # print(get_winners(tweets, first_names))
-     print(get_nominees(tweets))    
-
-data = list()
-with open('data/gg2020.json', 'r') as f_in:
-    for line in f_in:
-        data.append(json.loads(line))
-    tweets = [tweet["text"] for tweet in data]
-# print(get_winners(tweets, first_names))
-print(get_nominees(tweets))
+# paths = ['data/gg2013.json', 'data/gg2015.json']#, 'data/gg2013.json']
+#
+#
+# for path in paths:
+#      file = open(path)
+#      data = json.load(file)
+#      tweets = [tweet["text"] for tweet in data]
+#      # print(get_winners(tweets, first_names))
+#      print(get_nominees(tweets))
+#
+# data = list()
+# with open('data/gg2020.json', 'r') as f_in:
+#     for line in f_in:
+#         data.append(json.loads(line))
+#     tweets = [tweet["text"] for tweet in data]
+# # print(get_winners(tweets, first_names))
+# print(get_nominees(tweets))
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

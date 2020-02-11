@@ -38,8 +38,8 @@ def get_best_dressed(data, first_names):
                                                            lastName] = 10
 
             count += 1
-            if count % 5000 == 0:
-                print(int(count / len(data) * 100), "% Complete")
+            if count % 1000 == 0:
+                print(int(count*10 / len(data) * 100), "% Complete")
 
       potentialNames = dict(
           sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))

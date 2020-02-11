@@ -114,7 +114,7 @@ def get_nominee_films(data):
         award_pattern = re.compile(regexes[award])
         nomins = get_movies(data, award_pattern)
         nominees_dict[award] = nomins
-        print(award, nomins)
+        # print(award, nomins)
     return nominees_dict
 
 # data = list()
@@ -126,13 +126,13 @@ def get_nominee_films(data):
 # nominees = get_nominee_films(data)
 
 
-paths = ['data/gg2015.json']
-
-for path in paths:
-    file = open(path)
-    data = json.load(file)
-    data = [tweet['text'] for tweet in data]
-    nominees = get_nominee_films(data)
-    print(nominees)
-
+# paths = ['data/gg2015.json']
+#
+# for path in paths:
+#     file = open(path)
+#     data = json.load(file)
+#     data = [tweet['text'] for tweet in data]
+#     nominees = get_nominee_films(data)
+#     print(nominees)
+#
 

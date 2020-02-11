@@ -21,6 +21,7 @@ from  regex import search_award, awards_regex
 from get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
 from winners import get_winners
 from speech import speech_sentiment
+from noms import get_people_noms
 
 print("Running!")
 
@@ -89,31 +90,8 @@ class GGresponse:
         first_names = json.load(file_first_names)
 
         self.first_names = first_names
-
         self.tweets = tweets
-
         self.data = data
-
-    def get_all_values(self):
-        print("Getting hosts!")
-        self.get_hosts()
-        print("Getting award names!")
-        self.get_award_names()
-        print("Getting nominees!")
-        self.get_nominees()
-        print("Getting winners!")
-        self.get_winners()
-        print("Getting presenters!")
-        self.get_presenters()
-        print("Getting best dressed!")
-        self.get_best_dressed()
-        print("Getting speeches!")
-        self.get_speeches()
-        print("Generating the awards object!")
-        self.get_awards()
-        print("Removing presenters from the nominee list!")
-        self.remove_presenters_from_nominees()
-        print(self)
 
     def __str__(self):
         s = ""
@@ -132,13 +110,34 @@ class GGresponse:
 
         return s
 
-    def get_nominees(self):
-        self.nominee_people = get_person_nominees(self.tweets, self.first_names)
+    def get_all_values(self):
+        print("Getting hosts!")
+        self.get_hosts()
+        print("Getting award names!")
+        self.get_award_names()
+        print("Getting winners!")
+        self.get_winners()
+        print("Getting presenters!")
+        self.get_presenters()
+        print("Getting nominees!")
+        self.get_nominees()
+        print("Getting best dressed!")
+        self.get_best_dressed()
+        print("Getting speeches!")
+        self.get_speeches()
+        print("Generating the awards object!")
+        self.get_awards()
+        print("Removing presenters from the nominee list!")
+        self.remove_presenters_from_nominees()
+        print(self)
 
+    def get_nominees(self):
+        # self.nominee_people = get_person_nominees(self.tweets, self.first_names)
+        # self.nominee_movies = get_nominee_movies(self.data)
+
+        self.nominee_people = get_people_noms(self.tweets, self.first_names, self.presenters)
         self.nominee = self.nominee_people
         self.nominee = self.nominee.update(self.nominee_movies)
-        # print(self.nominee_people)
-        # self.nominee_movies = get_nominee_movies(self.data)
 
     def get_winners(self):
         # self.winners = get_person_winners(self.tweets, self.first_names)
@@ -209,5 +208,3 @@ class GGresponse:
         self.awards["bestDressed"] = self.dresses
         self.awards["speeches"] = self.speech
 
-
-gg = GGresponse("data/gg2013.json").get_all_values()

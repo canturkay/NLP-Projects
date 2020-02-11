@@ -10,9 +10,9 @@ def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
     global our_gg13, our_gg15, our_ggEX
-    if year == 2013:
+    if year == "2013":
         return our_gg13.hosts
-    elif year == 2015:
+    elif year == "2015":
         return our_gg15.hosts
     else:
         return our_ggEX.hosts
@@ -23,9 +23,9 @@ def get_awards(year):
     of this function or what it returns.'''
     # Your code here
     global our_gg13, our_gg15, our_ggEX
-    if year == 2013:
+    if year == "2013":
         return our_gg13.awards
-    elif year == 2015:
+    elif year == "2015":
         return our_gg15.awards
     else:
         return our_ggEX.awards
@@ -36,12 +36,12 @@ def get_nominees(year):
     the name of this function or what it returns.'''
     # Your code here
     global our_gg13, our_gg15, our_ggEX
-    if year == 2013:
-        return our_gg13.nominees
-    elif year == 2015:
-        return our_gg15.nominees
+    if year == "2013":
+        return our_gg13.nominee
+    elif year == "2015":
+        return our_gg15.nominee
     else:
-        return our_ggEX.nominees
+        return our_ggEX.nominee
 
 def get_winner(year):
     '''Winners is a dictionary with the hard coded award
@@ -49,9 +49,9 @@ def get_winner(year):
     Do NOT change the name of this function or what it returns.'''
     # Your code here
     global our_gg13, our_gg15, our_ggEX
-    if year == 2013:
+    if year == "2013":
         return our_gg13.winners
-    elif year == 2015:
+    elif year == "2015":
         return our_gg15.winners
     else:
         return our_ggEX.winners
@@ -63,15 +63,18 @@ def get_presenters(year):
     name of this function or what it returns.'''
     # Your code here
     global our_gg13, our_gg15, our_ggEX
-    if year == 2013:
+    if year == "2013":
         return our_gg13.presenters
-    elif year == 2015:
+    elif year == "2015":
         return our_gg15.presenters
     else:
-        return our_ggEX.presenters
+        return our_gg15.presenters
 
 
 global our_gg13, our_gg15, our_ggEX
+our_gg13 = None
+our_gg15 = None
+our_ggEX = None
 
 def pre_ceremony():
     '''This function loads/fetches/processes any data your program

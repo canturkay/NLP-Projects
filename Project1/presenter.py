@@ -37,7 +37,7 @@ def get_presenter_for_award(data, award, first_names, winner_list):
                                     if potentialNames:
                                         first, second = islice(potentialNames.values(), 2)
                                         potentialNames = [*potentialNames]
-                                        if first <= 2 * second:
+                                        if first <= 1.5 * second:
                                             presenters = potentialNames[:2]
                                         else:
                                             presenters = potentialNames[:1]
@@ -47,8 +47,14 @@ def get_presenter_for_award(data, award, first_names, winner_list):
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
-        potentialNames = [*potentialNames]
-        return potentialNames[:1]
+        if len(potentialNames) >= 2:
+            first, second = islice(potentialNames.values(), 2)
+            potentialNames = [*potentialNames]
+            if first <= 1.5 * second:
+                presenters = potentialNames[:2]
+            else:
+                presenters = potentialNames[:1]
+            return presenters
     else:
         return
 
