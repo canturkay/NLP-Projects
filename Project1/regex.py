@@ -89,7 +89,7 @@ person_awards_regex = {"best screenplay - motion picture":
                        r'(cecil|lifetime).*award',
                        }
 
-movie_awards_regex_2 = {"best foreign language film":
+movie_awards_regex = {"best foreign language film":
                       r'best foreign language', 
                       "best original score - motion picture":
                       r'best original score',
@@ -109,7 +109,7 @@ movie_awards_regex_2 = {"best foreign language film":
                       r'best animated',
                       }
 
-movie_awards_regex = {"best foreign language film":
+movie_awards_regex_2 = {"best foreign language film":
                       r'best foreign language',
                       "best mini-series or motion picture made for television":
                       r'best.*(limited|mini).*series',
