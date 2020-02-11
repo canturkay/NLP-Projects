@@ -58,33 +58,33 @@ person_awards_regex = {"best screenplay - motion picture":
                        "best director - motion picture":
                        r'best director',
                        "best performance by an actress in a television series - comedy or musical":
-                       r'best.*actress.*(tv|television|series).*comedy', 
+                       r'best (?!supporting).*actress.*(tv|television|series).*comedy',
                        "best performance by an actor in a supporting role in a motion picture":
                        r'best.*supporting.*actor.*(picture|movie|film)',
                        "best performance by an actress in a motion picture - comedy or musical":
-                       r'best.*actress.*comedy.*(film|movie|picture)',
+                       r'best (?!supporting).*actress.*comedy.*(film|movie|picture)',
                        "best performance by an actress in a supporting role in a series, mini-series or motion picture made for television":
                        r'best.*supporting.*actress.*series', 
                        "best performance by an actress in a television series - drama":
-                       r'best.*actress.*(tv|television).*drama',
+                       r'best (?!supporting).*actress.*(tv|television).*drama',
                        "best performance by an actress in a motion picture - drama":
-                       r'best.*actress.*drama.*(film|movie|picture)',
+                       r'best (?!supporting).*actress.*drama.*(film|movie|picture)',
                        "best performance by an actor in a motion picture - comedy or musical":
-                       r'best.*actor.*comedy.*(film|movie|picture)',
+                       r'best (?!supporting).*actor.*comedy.*(film|movie|picture)',
                        "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television":
                        r'best.*supporting.*actor.*(series|picture).*(tv|television)',
                        "best performance by an actress in a supporting role in a motion picture":
                        r'best.*supporting.*actress.*(film|movie|picture)',
                        "best performance by an actor in a mini-series or motion picture made for television":
-                       r'best.*actor.*(tv|television)',
+                       r'best (?!supporting).*actor.*(tv|television)',
                        "best performance by an actress in a mini-series or motion picture made for television":
-                       r'best.*actress.*(tv|television)',
+                       r'best (?!supporting).*actress.*(tv|television)',
                        "best performance by an actor in a motion picture - drama":
-                       r'best.*actor.*drama.*(film|movie|picture)',
+                       r'best (?!supporting).*actor.*drama.*(film|movie|picture)',
                        "best performance by an actor in a television series - drama":
-                       r'best.*actor.*(tv|television).*drama',
+                       r'best (?!supporting).*actor.*(tv|television).*drama',
                        "best performance by an actor in a television series - comedy or musical":
-                       r'best.*actor.*(tv|television).*comedy', 
+                       r'best (?!supporting).*actor.*(tv|television).*comedy',
                        "cecil b. demille award":
                        r'(cecil|lifetime).*award',
                        }
