@@ -9,7 +9,7 @@ def get_presenter_for_award(data, award, first_names, winner_list):
     # Given a dictionary of tweets and a specific award, returns the presenter of the
     stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
 
-    keywords = ["present"]
+    keywords = ["present", "giv", ]
 
     tweets = []
     for line in data:
@@ -56,7 +56,7 @@ def get_presenter_for_award(data, award, first_names, winner_list):
                 presenters = potentialNames[:1]
             return presenters
     else:
-        return
+        return [""]
 
 
 def get_presenters(data, first_names, winners):

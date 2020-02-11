@@ -76,7 +76,7 @@ class GGresponse:
         data = json.load(file)
 
         keywords = ["get", "got", "win", "won", "host", "present", "nomin", "look", "dress", "want", "wish",
-                    "hope", "should", "best"]
+                    "hope", "should", "best", "give", "speech", "monologue"]
 
         data_text = [tweet["text"] for tweet in data]
         tweets = []
@@ -137,24 +137,23 @@ class GGresponse:
 
         self.nominee_people = get_people_noms(self.tweets, self.first_names, self.presenters)
         self.nominee = self.nominee_people
-        self.nominee = self.nominee.update(self.nominee_movies)
+        for award in awards_regex.keys():
+            if award not in self.nominee.keys():
+                self.nominee[award] = []
+        #  self.nominee = dict(self.
+        # self.nominee = self.nominee.update(self.nominee_movies)
 
     def get_winners(self):
         # self.winners = get_person_winners(self.tweets, self.first_names)
         self.winners = get_winners(self.tweets, self.first_names)
         for award in awards_regex.keys():
-            if award not in self.winners.keys():
-                nominees = self.nominee_people[award] if award in self.nominee_people.keys() else None
-                if nominees and len(nominees) == 1:
-                    # print(award, nominees[0])
-                    self.winners[award] = nominees[0]
-            else:
+            if award in self.winners.keys():
                 winner = self.winners[award]
                 # print(award, winner)
-                if award not in self.nominee_people.keys():
-                    self.nominee_people[award] = [winner]
-                elif winner not in self.nominee_people[award]:
-                    self.nominee_people[award].append(winner)
+                if award in self.nominee_people.keys():
+                    if winner in self.nominee_people[award]:
+                        self.nominee_people[award].remove(winner)
+                        print(award, self.nominee_people[award], winner)
 
 
     def get_award_names(self):

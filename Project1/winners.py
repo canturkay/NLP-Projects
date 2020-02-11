@@ -36,7 +36,7 @@ def get_movie_winner_for_award(tweets, award):
         potentialNames = [*potentialNames]
         return potentialNames[0]
     else:
-        return
+        return ""
 
 
 def get_person_winner_for_award(tweets, award, first_names):
@@ -72,14 +72,14 @@ def get_person_winner_for_award(tweets, award, first_names):
         potentialNames = [*potentialNames]
         return potentialNames[0]
     else:
-        return
+        return ""
 
 
 def get_winners(data, first_names):
     # Given a path to a json object of an array of tweets and award categories, returns the presenter of all awards of the golden globes for the year as dictionaries.
     # data = [tweet['text'] for tweet in data]
     winners = {}
-    keywords = ["won", "win"]
+    keywords = ["won", "win", "speech"]
 
     tweets = []
     for line in data:

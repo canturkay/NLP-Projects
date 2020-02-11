@@ -15,7 +15,7 @@ def get_person_noms_for_award(data, award, first_names, presenters):
     stopwords = ['RT', 'Golden', 'Globes',
                  'GoldenGlobes', '@goldenglobes', '@']
 
-    keywords = ["nomin"]
+    keywords = ["nom", "hope", "should", "win", "get", "want", "chance", "wish", "for", "deserve"]
     tweets = []
     for line in data:
         if any(keyword in line.lower() for keyword in keywords):
@@ -39,6 +39,7 @@ def get_person_noms_for_award(data, award, first_names, presenters):
                                 potentialNames = dict(
                                     sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
                                 if potentialNames:
+                                    # print(potentialNames)
                                     potentialNames = [*potentialNames]
                                     nominees = potentialNames[:5]
                                     return nominees
@@ -47,10 +48,11 @@ def get_person_noms_for_award(data, award, first_names, presenters):
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
+        # print(potentialNames)
         potentialNames = [*potentialNames]
         return potentialNames[:5]
     else:
-        return []
+        return [""]
 
 
 def get_people_noms(data, first_names, presenters):
