@@ -152,5 +152,3 @@ def search_movie_award(sentence):
         if awards_regex[award].search(sentence_lower):
             return award
     return None
-
-
