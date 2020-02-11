@@ -1,7 +1,7 @@
 import json
 import nltk
 # import spacy
-from Project1.regex import search_person_award
+from regex import search_person_award
 
 # nlp = spacy.load("en_core_web_sm")
 
