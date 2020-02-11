@@ -140,12 +140,7 @@ class GGresponse:
         for award in awards_regex.keys():
             if award not in self.nominee.keys():
                 self.nominee[award] = []
-        #  self.nominee = dict(self.
-        # self.nominee = self.nominee.update(self.nominee_movies)
 
-    def get_winners(self):
-        # self.winners = get_person_winners(self.tweets, self.first_names)
-        self.winners = get_winners(self.tweets, self.first_names)
         for award in awards_regex.keys():
             if award in self.winners.keys():
                 winner = self.winners[award]
@@ -153,7 +148,10 @@ class GGresponse:
                 if award in self.nominee.keys():
                     if winner in self.nominee[award]:
                         self.nominee[award].remove(winner)
-                        print(award, self.nominee[award], winner)
+
+    def get_winners(self):
+        # self.winners = get_person_winners(self.tweets, self.first_names)
+        self.winners = get_winners(self.tweets, self.first_names)
 
 
     def get_award_names(self):
