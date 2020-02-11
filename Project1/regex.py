@@ -1,8 +1,8 @@
 import re
-awards_regex = {"best screenplay - motion picture":
-                    r'.*best screenplay.*motion picture',
-                "best director - motion picture":
-                    r'best director.*motion picture',
+awards_regex = {"best screenplay":
+                    r'best screenplay',
+                "best director":
+                    r'best director',
                 "best performance by an actress in a television series - comedy or musical":
                     r'best performance.*actress.*(tv|television) series.*comedy.*musical',
                 "best foreign language film":
