@@ -43,7 +43,7 @@ def get_presenter_for_award(tweets, award, first_names):
 
 
 def get_presenters(data, first_names, awards=[]):
-    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
+    stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@', 'Best']
     # Given a path to a json object of an array of tweets and award categories, returns the presenter of all awards of the golden globes for the year as dictionaries.
     # data = [tweet['text'] for tweet in data]
     presenters = {}
@@ -57,11 +57,6 @@ def get_presenters(data, first_names, awards=[]):
 
 
 # paths = ['data/gg2015.json']
-#
-# Awards = ["Best Motion Picture", "Best Performance by an Actress", "Best Performance by an Actor",
-#           "Best Performance by an Actress in a Supporting Role", "Best Performance by an Actor in a Supporting Role",
-#           "Best Director", "Best Screenplay", "Best Original Score", "Best Original Song", "Best Television Series"]
-#
 #
 #
 # file_first_names = open('data/names.json')
