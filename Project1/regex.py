@@ -22,7 +22,9 @@ awards_regex = {"best screenplay - motion picture":
                 "best performance by an actress in a motion picture - drama":
                     r'best.*actress.*drama.*(film|movie|picture)',
                 "best performance by an actor in a motion picture - comedy or musical":
-                    r'best.*actor.*comedy',
+                    r'best.*actor.*comedy.*(film|movie|picture',
+                "best performance by an actress in a motion picture - comedy or musical":
+                    r'best.*actress.*comedy.*(film|movie|picture)',
                 "best motion picture - drama":
                     r'best.*drama',
                 "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television":
@@ -58,7 +60,9 @@ person_awards_regex = {"best screenplay - motion picture":
                        "best performance by an actress in a television series - comedy or musical":
                        r'best.*actress.*(tv|television|series).*comedy', 
                        "best performance by an actor in a supporting role in a motion picture":
-                       r'best.*supporting.*actor.*(picture|movie|)',
+                       r'best.*supporting.*actor.*(picture|movie|film)',
+                       "best performance by an actress in a motion picture - comedy or musical":
+                       r'best.*actress.*comedy.*(film|movie|picture)',
                        "best performance by an actress in a supporting role in a series, mini-series or motion picture made for television":
                        r'best.*supporting.*actress.*series', 
                        "best performance by an actress in a television series - drama":
@@ -66,7 +70,7 @@ person_awards_regex = {"best screenplay - motion picture":
                        "best performance by an actress in a motion picture - drama":
                        r'best.*actress.*drama.*(film|movie|picture)',
                        "best performance by an actor in a motion picture - comedy or musical":
-                       r'best.*actor.*comedy',
+                       r'best.*actor.*comedy.*(film|movie|picture)',
                        "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television":
                        r'best.*supporting.*actor.*(series|picture).*(tv|television)',
                        "best performance by an actress in a supporting role in a motion picture":
