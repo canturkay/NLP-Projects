@@ -1,13 +1,13 @@
 import json
 
-from Project1.get_nominee_names import get_nominee_names
-from Project1.get_award_names import get_award_names
-from Project1.host import get_hosts
-from Project1.presenter import get_presenters
-from Project1.get_best_dressed import dress_sentiment
-from Project1.regex import search_award, awards_regex
-from Project1.get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
-from Project1.winners import get_winners
+from get_nominee_names import get_nominee_names
+from  get_award_names import get_award_names
+from  host import get_hosts
+from  presenter import get_presenters
+from  get_best_dressed import dress_sentiment
+from  regex import search_award, awards_regex
+from  get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
+from  winners import get_winners
 
 print("Running!")
 
@@ -101,9 +101,9 @@ class GGresponse:
             s += "Award: " + ' '.join(x.capitalize() for x in award.split()) + "\n"
             s += "Presenters: " + ', '.join(x for x in (self.presenters[award] if award in
                                                                                  self.presenters.keys() else [])) + "\n"
-            s += "Nominees: " + ', '.join(x for x in (self.get_award_nominees(award) if
-                                                         self.get_award_nominees(award) else [])) + "\n"
-            s += "Winner: " + (self.winners[award] if award in self.winners.keys() else "Not Found") + "\n\n"
+            s += "Nominees: " + ', '.join(x for x in (str(self.get_award_nominees(award)) if
+                                                         self.get_award_nominees(award) else ["Not Found"])) + "\n"
+            s += "Winner: " + (str(self.winners[award]) if award in self.winners.keys() else "Not Found") + "\n\n"
 
         s += "Best Dressed: " + self.dresses["best"] + "\n"
         s += "Worst Dressed: " + self.dresses["worst"] + "\n"
@@ -175,5 +175,5 @@ class GGresponse:
         self.awards["bestDressed"] = self.dresses
 
 
-gg = GGresponse("data/gg2015.json")
+gg = GGresponse("data/gg2013.json")
 # print(gg.awards)
