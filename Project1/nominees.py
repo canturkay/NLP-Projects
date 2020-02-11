@@ -227,6 +227,8 @@ with open('data/gg2020.json', 'r') as f_in:
 # print(get_nominee_tv(data))
 
 winners, nominees = get_nominee_films(data, '2020')
+print(winners)
+print(nominees)
 
 
 
