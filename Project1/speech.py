@@ -68,17 +68,17 @@ def speech_sentiment(data, first_names = first_names):
   return sentiment
 
 
-paths = ['data/gg2015.json']#, 'data/gg2013.json']
-
-
-
-
-for path in paths:
-  file = open(path)
-  data = json.load(file)
-  tweets = [tweet["text"] for tweet in data]
-  candidates = speech_sentiment(tweets)
-  print(candidates)
+# paths = ['data/gg2015.json']#, 'data/gg2013.json']
+#
+#
+#
+#
+# for path in paths:
+#   file = open(path)
+#   data = json.load(file)
+#   tweets = [tweet["text"] for tweet in data]
+#   candidates = speech_sentiment(tweets)
+#   print(candidates)
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

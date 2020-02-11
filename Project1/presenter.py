@@ -64,7 +64,7 @@ def get_presenters(data, first_names, winners):
             stopwords.append(tag[0])
     count = 0
     for award in awards_regex.keys():
-        winner_list = []#winners[award] if award in person_awards_regex.keys() else []
+        winner_list = winners[award] if award in person_awards_regex.keys() else []
         presenters[award] = get_presenter_for_award(data, award, first_names, winner_list)
         count += 1
         print(int(count / len(awards_regex.keys()) * 100), "% Complete")

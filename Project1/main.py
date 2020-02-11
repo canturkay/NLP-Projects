@@ -84,12 +84,12 @@ class GGresponse:
         self.get_hosts()
         print("Getting award names!")
         self.get_award_names()
-        print("Getting presenters!")
-        self.get_presenters()
         print("Getting nominees!")
         self.get_nominees()
         print("Getting winners!")
         self.get_winners()
+        print("Getting presenters!")
+        self.get_presenters()
         print("Getting best dressed!")
         self.get_best_dressed()
         print("Generating the awards object!")
@@ -151,11 +151,11 @@ class GGresponse:
         # print(self.hosts)
 
     def get_presenters(self):
-        #self.presenters = get_presenters(self.tweets, self.first_names)
-        self.presenters = get_presenters_new(self.tweets, self.first_names)
-        for award, presenters in self.presenters.items():
-            if len(presenters) > 2:
-                self.presenters[award] = presenters[:2]
+        self.presenters = get_presenters(self.tweets, self.first_names, self.winners)
+        # self.presenters = get_presenters_new(self.tweets, self.first_names, self.winners)
+        # for award, presenters in self.presenters.items():
+        #     if presenters and len(presenters) > 2:
+        #         self.presenters[award] = presenters[:2]
         print(self.presenters)
 
     def get_best_dressed(self):
@@ -172,10 +172,11 @@ class GGresponse:
 
     def remove_presenters_from_nominees(self):
         for award, presenters in self.presenters.items():
-            for presenter in presenters:
-                if award in self.nominee_people:
-                    if presenter in self.nominee_people[award]:
-                        self.nominee_people[award].remove(presenter)
+            if presenters:
+                for presenter in presenters:
+                    if award in self.nominee_people:
+                        if presenter in self.nominee_people[award]:
+                            self.nominee_people[award].remove(presenter)
 
     def get_awards(self):
         for award in awards_regex.keys():
@@ -186,7 +187,7 @@ class GGresponse:
         self.awards["hosts"] = self.hosts
         self.awards["awardNames"] = self.award_names
         self.awards["bestDressed"] = self.dresses
-        self.award_names["speeches"] = self.speech
+        self.awards["speeches"] = self.speech
 
 
 gg = GGresponse("data/gg2013.json")
