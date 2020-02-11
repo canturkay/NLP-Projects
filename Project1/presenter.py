@@ -14,7 +14,7 @@ def get_presenter_for_award(tweets, award, first_names):
             for i in range(len(tags) - 1):
                 name = ''
                 lastName = ''
-                if tags[i][1] == 'NNP' and tags[i][0] not in stopwords:
+                if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names:
                     name = tags[i][0]
                     if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
                         lastName = tags[i + 1][0]
@@ -32,8 +32,7 @@ def get_presenter_for_award(tweets, award, first_names):
                                         presenters = potentialNames[:1]
                                     return presenters
                         else:
-                            if name in first_names:
-                                potentialNames[name + ' ' + lastName] = 1
+                            potentialNames[name + ' ' + lastName] = 1
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
