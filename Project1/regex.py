@@ -2,6 +2,7 @@ import re
 awards_regex = {"best screenplay - motion picture":
                     r'best screenplay',
                 "best director - motion picture":
+
                     r'best director',
                 "best performance by an actress in a television series - comedy or musical":
                     r'best.*actress.*(tv|television|series).*comedy',
@@ -107,6 +108,11 @@ movie_awards_regex = {"best foreign language film":
 
 for key in awards_regex.keys():
     awards_regex[key] = re.compile(awards_regex[key])
+
+def match_award(sentence, award):
+    if awards_regex[award].search(sentence.lower()):
+        return True
+    return False
 
 
 def search_award(sentence):
