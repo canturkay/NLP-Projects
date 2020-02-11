@@ -49,10 +49,10 @@ awards_regex = {"best screenplay":
                     r'best performance.*actor.*(tv|television) series.*comedy.*musical'
                 }
 
-person_awards_regex = {"best screenplay - motion picture":
-                    r'.*best screenplay.*motion picture',
-                "best director - motion picture":
-                    r'best director.*motion picture',
+person_awards_regex = {"best screenplay":
+                    r'best screenplay',
+                "best director":
+                    r'best director',
                 "best performance by an actress in a television series - comedy or musical":
                     r'best performance.*actress.*[tv|television] series.*comedy.*musical',
                 "best performance by an actor in a supporting role in a motion picture":
@@ -85,8 +85,7 @@ person_awards_regex = {"best screenplay - motion picture":
                     r'best performance.*actor.*[tv|television] series.*comedy.*musical'
                 }
 
-movie_awards_regex = {"best screenplay - motion picture":
-                    r'.*best screenplay.*motion picture',
+movie_awards_regex = {
                 "best foreign language film":
                     r'best foreign language',
                 "best motion picture - comedy or musical":
@@ -109,6 +108,11 @@ movie_awards_regex = {"best screenplay - motion picture":
 
 for key in awards_regex.keys():
     awards_regex[key] = re.compile(awards_regex[key])
+
+def match_award(sentence, award):
+    if awards_regex[award].search(sentence.lower()):
+        return True
+    return False
 
 
 def search_award(sentence):

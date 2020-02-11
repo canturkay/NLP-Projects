@@ -1,6 +1,6 @@
 import json
 from nltk.tokenize import RegexpTokenizer
-from regex import search_person_award, search_award, search_movie_award
+from Project1.regex import search_person_award, search_award, search_movie_award
 import string
 
 
