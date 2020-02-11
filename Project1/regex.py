@@ -22,7 +22,7 @@ awards_regex = {"best screenplay - motion picture":
                 "best performance by an actress in a motion picture - drama":
                     r'best.*actress.*drama.*(film|movie|picture)',
                 "best performance by an actor in a motion picture - comedy or musical":
-                    r'best.*actor.*comedy.*(film|movie|picture',
+                    r'best.*actor.*comedy.*(film|movie|picture)',
                 "best performance by an actress in a motion picture - comedy or musical":
                     r'best.*actress.*comedy.*(film|movie|picture)',
                 "best motion picture - drama":
