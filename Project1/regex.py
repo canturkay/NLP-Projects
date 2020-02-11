@@ -34,7 +34,7 @@ awards_regex = {"best screenplay - motion picture":
                 "best television series - drama":
                     r'best.*drama.*series',
                 "best performance by an actor in a mini-series or motion picture made for television":
-                    r'best.*actor.*(tv|television)',
+                    r'best.*actor*(mini|limited|picture).*(tv|television)',
                 "best performance by an actress in a mini-series or motion picture made for television":
                     r'best.*actress.*(tv|television)',
                 "best animated feature film":
