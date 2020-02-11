@@ -150,10 +150,10 @@ class GGresponse:
             if award in self.winners.keys():
                 winner = self.winners[award]
                 # print(award, winner)
-                if award in self.nominee_people.keys():
-                    if winner in self.nominee_people[award]:
-                        self.nominee_people[award].remove(winner)
-                        print(award, self.nominee_people[award], winner)
+                if award in self.nominee.keys():
+                    if winner in self.nominee[award]:
+                        self.nominee[award].remove(winner)
+                        print(award, self.nominee[award], winner)
 
 
     def get_award_names(self):
