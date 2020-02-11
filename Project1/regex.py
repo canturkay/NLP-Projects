@@ -20,7 +20,7 @@ awards_regex = {"best screenplay - motion picture":
                 "best performance by an actress in a television series - drama":
                     r'best.*actress.*(tv|television).*drama',
                 "best performance by an actress in a motion picture - drama":
-                    r'(?!series|tv|television).*best.*actress.*drama',
+                    r'best.*actress.*drama.*(film|movie|picture)',
                 "best performance by an actor in a motion picture - comedy or musical":
                     r'best.*actor.*comedy',
                 "best motion picture - drama":
@@ -40,7 +40,7 @@ awards_regex = {"best screenplay - motion picture":
                 "best original song - motion picture":
                     r'best original song',
                 "best performance by an actor in a motion picture - drama":
-                    r'(?!series|tv|television).*best.*actor.*drama',
+                    r'best.*actor.*drama.*(film|movie|picture)',
                 "best television series - comedy or musical":
                     r'best (tv|television).*comedy',
                 "best performance by an actor in a television series - drama":
@@ -64,7 +64,7 @@ person_awards_regex = {"best screenplay - motion picture":
                        "best performance by an actress in a television series - drama":
                        r'best.*actress.*(tv|television).*drama',
                        "best performance by an actress in a motion picture - drama":
-                       r'(?!series|tv|television).*best.*actress.*drama',
+                       r'best.*actress.*drama.*(film|movie|picture)',
                        "best performance by an actor in a motion picture - comedy or musical":
                        r'best.*actor.*comedy',
                        "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television":
@@ -76,7 +76,7 @@ person_awards_regex = {"best screenplay - motion picture":
                        "best performance by an actress in a mini-series or motion picture made for television":
                        r'best.*actress.*(tv|television)',
                        "best performance by an actor in a motion picture - drama":
-                       r'(?!series|tv|television).*best.*actor.*drama.',
+                       r'best.*actor.*drama.*(film|movie|picture)',
                        "best performance by an actor in a television series - drama":
                        r'best.*actor.*(tv|television).*drama',
                        "best performance by an actor in a television series - comedy or musical":
