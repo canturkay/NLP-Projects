@@ -92,6 +92,8 @@ class GGresponse:
         self.get_presenters()
         print("Getting best dressed!")
         self.get_best_dressed()
+        print("Getting speeches!")
+        self.get_speeches()
         print("Generating the awards object!")
         self.get_awards()
         print("Removing presenters from the nominee list!")
@@ -102,7 +104,7 @@ class GGresponse:
         s = ""
         for award in awards_regex.keys():
             s += "Award: " + ' '.join(x.capitalize() for x in award.split()) + "\n"
-            s += "Presenters: " + ', '.join(x for x in (self.presenters[award] if award in
+            s += "Presenters: " + ', '.join(x for x in ((self.presenters[award] if self.presenters[award] else ["None"]) if award in
                                                                                  self.presenters.keys() else [])) + "\n"
             s += "Nominees: " + ', '.join(x for x in (str(self.get_award_nominees(award)) if
                                                          self.get_award_nominees(award) else ["Not Found"])) + "\n"
