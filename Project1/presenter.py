@@ -1,26 +1,36 @@
 import json
 import nltk
 from itertools import islice
+from Project1.regex import awards_regex, match_award
+from nltk.tokenize import RegexpTokenizer
 
 
-def get_presenter_for_award(tweets, award, first_names):
+def get_presenter_for_award(data, award, first_names):
     # Given a dictionary of tweets and a specific award, returns the presenter of the
     stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
 
+    keywords = ["present"]
+
+    tweets = []
+    for line in data:
+        if any(keyword in line.lower() for keyword in keywords):
+            tweets.append(line)
+
+    tokenizer = RegexpTokenizer(r'\w+')
+
     potentialNames = {}
     for tweet in tweets:
-        if 'present' in tweet.lower() and award in tweet:
-            tags = nltk.pos_tag(nltk.word_tokenize(tweet))
+        if match_award(tweet, award):
+            # tags = nltk.pos_tag(nltk.word_tokenize(tweet))
+            tags = tokenizer.tokenize(tweet)
             for i in range(len(tags) - 1):
-                name = ''
-                lastName = ''
-                if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names:
-                    name = tags[i][0]
-                    if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
-                        lastName = tags[i + 1][0]
+                if tags[i][0].isupper() and tags[i] not in stopwords and tags[i] in first_names:
+                    name = tags[i]
+                    if tags[i + 1][0].isupper() and tags[i + 1] not in stopwords:
+                        lastName = tags[i + 1]
                         if name + ' ' + lastName in potentialNames:
                             potentialNames[name + ' ' + lastName] += 1
-                            if potentialNames[name + ' ' + lastName] == 300:
+                            if potentialNames[name + ' ' + lastName] == 200:
                                 potentialNames = dict(
                                     sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
                                 if potentialNames:
@@ -42,35 +52,34 @@ def get_presenter_for_award(tweets, award, first_names):
         return
 
 
-def get_presenters(data, first_names, awards=[]):
+def get_presenters(data, first_names):
     stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
     # Given a path to a json object of an array of tweets and award categories, returns the presenter of all awards of the golden globes for the year as dictionaries.
     # data = [tweet['text'] for tweet in data]
     presenters = {}
-    for award in awards:
+    for award in awards_regex.keys():
         tags = nltk.pos_tag(nltk.word_tokenize(award))
         for tag in tags:
             stopwords.append(tag[0])
-    for award in awards:
+    count = 0
+    for award in awards_regex.keys():
         presenters[award] = get_presenter_for_award(data, award, first_names)
+        count += 1
+        print(int(count / len(awards_regex.keys()) * 100), "% Complete")
     return presenters
 
 
-# paths = ['data/gg2015.json']
-#
-# Awards = ["Best Motion Picture", "Best Performance by an Actress", "Best Performance by an Actor",
-#           "Best Performance by an Actress in a Supporting Role", "Best Performance by an Actor in a Supporting Role",
-#           "Best Director", "Best Screenplay", "Best Original Score", "Best Original Song", "Best Television Series"]
-#
-#
-#
-# file_first_names = open('data/names.json')
-# first_names = json.load(file_first_names)
-#
-# for path in paths:
-#     file = open(path)
-#     data = json.load(file)
-#     print(get_presenters(data))
+paths = ['data/gg2015.json']
+
+file_first_names = open('data/names.json')
+first_names = json.load(file_first_names)
+
+
+for path in paths:
+    file = open(path)
+    data = json.load(file)
+    data_text = [tweet["text"] for tweet in data]
+    print(get_presenters(data_text, first_names))
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

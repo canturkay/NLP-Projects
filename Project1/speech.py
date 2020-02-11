@@ -51,7 +51,7 @@ def analyze_speeches(data, first_names = first_names):
                             else:
                                   potentialNames[name + ' ' + lastName] = 1
           count += 1
-          if count % 100 == 0:
+          if count % 500 == 0:
             print(int(count / len(tweets) * 100), "% Complete")
 
       potentialNames = dict(
