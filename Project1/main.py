@@ -74,7 +74,7 @@ class GGresponse:
             if any(keyword in line.lower() for keyword in self.keywords):
                 self.tweets.append(line)
 
-        #print(len(self.tweets)/len(self.data_text)*100)
+        self.tweets = self.tweets[:300000]
 
         self.data = data
         print("Getting hosts!")
@@ -145,8 +145,12 @@ class GGresponse:
         # print(self.hosts)
 
     def get_presenters(self):
+        #self.presenters = get_presenters(self.tweets, self.first_names)
         self.presenters = get_presenters_new(self.tweets, self.first_names)
-        # print(self.presenters)
+        for award, presenters in self.presenters.items():
+            if len(presenters) > 2:
+                self.presenters[award] = presenters[:2]
+        print(self.presenters)
 
     def get_best_dressed(self):
         self.dresses = dress_sentiment(self.tweets, self.first_names)
