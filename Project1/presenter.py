@@ -48,7 +48,7 @@ def get_presenter_for_award(data, award, first_names, winner_list):
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
         potentialNames = [*potentialNames]
-        return potentialNames[0]
+        return potentialNames[:1]
     else:
         return
 

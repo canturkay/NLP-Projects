@@ -49,49 +49,49 @@ class GGresponse:
                         "best performance by an actor in a television series - drama",
                         "best performance by an actor in a television series - comedy or musical"
                         ]
-    data = {}
-    data_text = []
-    tweets = []
+    data2013 = {}
+    tweets2013 = []
 
-    keywords = []
+    hosts2013 = []
+    presenters2013 = {}
+    nominee_people2013 = {}
+    nominee_movies2013 = {}
 
-    award_names = []
-    hosts = []
-    presenters = {}
-    nominee_people = {}
-    nominee_movies = {}
+    winners2013 = {}
+    awards2013 = {}
+    dresses2013 = {}
+    speech2013 = {}
 
-    winners = {}
+    data2015 = {}
+    tweets2015 = []
 
-    awards = {}
+    hosts2015 = []
+    presenters2015 = {}
+    nominee_people2015 = {}
+    nominee_movies2015 = {}
 
-    dresses = {}
+    winners2015 = {}
+    awards2015 = {}
+    dresses2015 = {}
+    speech2015 = {}
+
 
     first_names = []
+    keywords = []
+    award_names = []
 
-    speech = {}
-
-    def __init__(self, path):
+    def __init__(self, data2013, data2015, tweets2013, tweets2015, first_names):
         print("Loading data!")
-        file = open(path)
-        data = json.load(file)
-
         print("Loading first names file!")
-        file_first_names = open('data/names.json')
-        self.first_names = json.load(file_first_names)
 
-        self.data_text = [tweet["text"] for tweet in data]
+        self.first_names = first_names
 
-        self.keywords = ["get", "got", "win", "won", "host", "present", "nomin", "look", "dress", "want", "wish",
-                         "hope", "should", "best"]
+        self.tweets2013 = tweets2013
+        self.tweets2015 = tweets2015
 
-        for line in self.data_text:
-            if any(keyword in line.lower() for keyword in self.keywords):
-                self.tweets.append(line)
+        self.data2013 = data2013
+        self.data2015 = data2015
 
-        self.tweets = self.tweets[:300000]
-
-        self.data = data
         print("Getting hosts!")
         self.get_hosts()
         print("Getting award names!")
@@ -116,10 +116,8 @@ class GGresponse:
         s = ""
         for award in awards_regex.keys():
             s += "Award: " + ' '.join(x.capitalize() for x in award.split()) + "\n"
-            s += "Presenters: " + ', '.join(x for x in ((self.presenters[award] if self.presenters[award] else ["None"]) if award in
-                                                                                 self.presenters.keys() else [])) + "\n"
-            s += "Nominees: " + ', '.join(x for x in (str(self.get_award_nominees(award)) if
-                                                         self.get_award_nominees(award) else ["Not Found"])) + "\n"
+            s += "Presenters: " + ', '.join(x for x in (self.presenters[award] if self.presenters[award] else [])) + "\n"
+            s += "Nominees: " + ', '.join(x if x else "Not found" for x in (self.get_award_nominees(award) if self.get_award_nominees(award) != None else [])) + "\n"
             s += "Winner: " + (str(self.winners[award]) if award in self.winners.keys() else "Not Found") + "\n\n"
 
         s += "Best Dressed: " + self.dresses["best"] + "\n"
@@ -133,75 +131,117 @@ class GGresponse:
         return s
 
     def get_nominees(self):
-        self.nominee_people = get_person_nominees(self.tweets, self.first_names)
+        self.nominee_people2013 = get_person_nominees(self.tweets2013, self.first_names)
+        self.nominee_people2015 = get_person_nominees(self.tweets2015, self.first_names)
         # print(self.nominee_people)
         # self.nominee_movies = get_nominee_movies(self.data)
 
     def get_winners(self):
         # self.winners = get_person_winners(self.tweets, self.first_names)
-        self.winners = get_winners(self.tweets, self.first_names)
+        self.winners2013 = get_winners(self.tweets2013, self.first_names)
         for award in awards_regex.keys():
-            if award not in self.winners.keys():
-                nominees = self.nominee_people[award] if award in self.nominee_people.keys() else None
+            if award not in self.winners2013.keys():
+                nominees = self.nominee_people2013[award] if award in self.nominee_people2013.keys() else None
                 if nominees and len(nominees) == 1:
                     # print(award, nominees[0])
-                    self.winners[award] = nominees[0]
+                    self.winners2013[award] = nominees[0]
             else:
-                winner = self.winners[award]
+                winner = self.winners2013[award]
                 # print(award, winner)
-                if award not in self.nominee_people.keys():
-                    self.nominee_people[award] = [winner]
-                elif winner not in self.nominee_people[award]:
-                    self.nominee_people[award].append(winner)
+                if award not in self.nominee_people2013.keys():
+                    self.nominee_people2013[award] = [winner]
+                elif winner not in self.nominee_people2013[award]:
+                    self.nominee_people2013[award].append(winner)
+
+
+        self.winners2015 = get_winners(self.tweets2015, self.first_names)
+        for award in awards_regex.keys():
+            if award not in self.winners2015.keys():
+                nominees = self.nominee_people2015[award] if award in self.nominee_people2015.keys() else None
+                if nominees and len(nominees) == 1:
+                    # print(award, nominees[0])
+                    self.winners2015[award] = nominees[0]
+            else:
+                winner = self.winners2015[award]
+                # print(award, winner)
+                if award not in self.nominee_people2015.keys():
+                    self.nominee_people2015[award] = [winner]
+                elif winner not in self.nominee_people2015[award]:
+                    self.nominee_people2015[award].append(winner)
         # print(self.winners)
 
     def get_award_names(self):
-        self.award_names = get_award_names(self.tweets)
+        self.award_names2013 = get_award_names(self.tweets2013)
+        self.award_names2015 = get_award_names(self.tweets2015)
         # print(self.award_names)
 
     def get_hosts(self):
-        self.hosts = get_hosts(self.tweets, self.first_names)
+        self.hosts2013 = get_hosts(self.tweets2013, self.first_names)
+        self.hosts2013 = get_hosts(self.tweets2015, self.first_names)
         # print(self.hosts)
 
     def get_presenters(self):
-        self.presenters = get_presenters(self.tweets, self.first_names, self.winners)
+        self.presenters2013 = get_presenters(self.tweets2013, self.first_names, self.winners2013)
+        self.presenters2015 = get_presenters(self.tweets2015, self.first_names, self.winners2015)
         # self.presenters = get_presenters_new(self.tweets, self.first_names, self.winners)
         # for award, presenters in self.presenters.items():
         #     if presenters and len(presenters) > 2:
         #         self.presenters[award] = presenters[:2]
-        print(self.presenters)
+        # print(self.presenters)
 
     def get_best_dressed(self):
-        self.dresses = dress_sentiment(self.tweets, self.first_names)
+        self.dresses2013 = dress_sentiment(self.tweets2013, self.first_names)
+        self.dresses2015 = dress_sentiment(self.tweets2015, self.first_names)
 
     def get_speeches(self):
-        self.speech = speech_sentiment(self.tweets, self.first_names)
+        self.speech2013 = speech_sentiment(self.tweets2013, self.first_names)
+        self.speech2015 = speech_sentiment(self.tweets2015, self.first_names)
 
-    def get_award_nominees(self, award):
-        if award in self.nominee_people:
-            return self.nominee_people[award]
-        else:
-            return self.nominee_movies[award] if award in self.nominee_movies.keys() else None
+    def get_award_nominees(self, award, year):
+        if year == 2013:
+            if award in self.nominee_people2013:
+                return self.nominee_people2013[award]
+            else:
+                return self.nominee_movies2013[award] if award in self.nominee_movies2013.keys() else None
+        elif year == 2015:
+            if award in self.nominee_people2015:
+                return self.nominee_people2015[award]
+            else:
+                return self.nominee_movies2015[award] if award in self.nominee_movies2015.keys() else None
 
     def remove_presenters_from_nominees(self):
-        for award, presenters in self.presenters.items():
+        for award, presenters in self.presenters2013.items():
             if presenters:
                 for presenter in presenters:
-                    if award in self.nominee_people:
-                        if presenter in self.nominee_people[award]:
-                            self.nominee_people[award].remove(presenter)
+                    if award in self.nominee_people2013:
+                        if presenter in self.nominee_people2013[award]:
+                            self.nominee_people2013[award].remove(presenter)
+
+        for award, presenters in self.presenters2015.items():
+            if presenters:
+                for presenter in presenters:
+                    if award in self.nominee_people2015:
+                        if presenter in self.nominee_people2015[award]:
+                            self.nominee_people2015[award].remove(presenter)
 
     def get_awards(self):
         for award in awards_regex.keys():
-            self.awards[award] = {"presenters": self.presenters[award] if award in self.presenters.keys() else None,
-                                  "nominees": self.get_award_nominees(award),
-                                  "winner": self.winners[award] if award in self.winners.keys() else None}
+            self.awards2013[award] = {"presenters": self.presenters2013[award] if award in self.presenters2013.keys() else None,
+                                  "nominees": self.get_award_nominees(award, 2013),
+                                  "winner": self.winners2013[award] if award in self.winners2013.keys() else None}
 
-        self.awards["hosts"] = self.hosts
-        self.awards["awardNames"] = self.award_names
-        self.awards["bestDressed"] = self.dresses
-        self.awards["speeches"] = self.speech
+        self.awards2013["hosts"] = self.hosts2013
+        self.awards2013["awardNames"] = self.award_names2013
+        self.awards2013["bestDressed"] = self.dresses2013
+        self.awards2013["speeches"] = self.speech2013
 
+        for award in awards_regex.keys():
+            self.awards2015[award] = {"presenters": self.presenters2015[award] if award in self.presenters2015.keys() else None,
+                                  "nominees": self.get_award_nominees(award, 2015),
+                                  "winner": self.winners2015[award] if award in self.winners2015.keys() else None}
 
-gg = GGresponse("data/gg2013.json")
-# print(gg.awards)
+        self.awards2015["hosts"] = self.hosts2015
+        self.awards2015["awardNames"] = self.award_names2015
+        self.awards2015["bestDressed"] = self.dresses2015
+        self.awards2015["speeches"] = self.speech2015
+
