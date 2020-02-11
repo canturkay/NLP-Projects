@@ -26,14 +26,14 @@ awardkeywords = ["best screenplay",
                     "best drama series",
                     "best actor limited series",
                     "best actress limited series",
-                    "best animated feature film",
+                    "best animated film",
                     "best original song",
                     "best actor drama",
                     "best comedy series",
                     "Best actor tv drama",
                     "Best TV comedy actor"
                 ]
-def get_winner_for_award(tweets, award, first_names):
+def get_winner_for_award(tweets, award, first_names = first_names):
     # Given a dictionary of tweets and a specific award, returns the presenter of the
 
     potentialNames = {}
@@ -88,7 +88,7 @@ def get_winner_for_award(tweets, award, first_names):
         return
 
 
-def get_winners(data, first_names, awards=awardkeywords):
+def get_winners(data, first_names = first_names, awards=awardkeywords):
     # Given a path to a json object of an array of tweets and award categories, returns the presenter of all awards of the golden globes for the year as dictionaries.
     # data = [tweet['text'] for tweet in data]
     winners = {}
@@ -101,18 +101,18 @@ def get_winners(data, first_names, awards=awardkeywords):
     return winners
 
 
-# paths = ['data/gg2015.json', 'data/gg2013.json']
+paths = ['data/gg2015.json', 'data/gg2013.json']
 
 
-# for path in paths:
-#     file = open(path)
-#     data = json.load(file)
-#     tweets = [tweet["text"] for tweet in data]
-#     print(get_winners(tweets))
+for path in paths:
+    file = open(path)
+    data = json.load(file)
+    tweets = [tweet["text"] for tweet in data]
+    print(get_winners(tweets))
 
-# data = list()
-# with open('data/gg2020.json', 'r') as f_in:
-#   for line in f_in:
-#     data.append(json.loads(line))
-#   tweets = [tweet["text"] for tweet in data]
-# print(get_winners(tweets))
+data = list()
+with open('data/gg2020.json', 'r') as f_in:
+  for line in f_in:
+    data.append(json.loads(line))
+  tweets = [tweet["text"] for tweet in data]
+print(get_winners(tweets))
