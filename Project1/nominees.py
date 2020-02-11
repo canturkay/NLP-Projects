@@ -49,7 +49,7 @@ def category(film_title):
     for m in movies:
         if m['title'] == film_title or m['title'][:len(film_title)] == film_title:
             movie = ia.get_movie(m.getID())
-            if 'Musical' in movie['genres']:
+            if 'genre' in movie and 'Musical' in movie['genres']:
                 comedies.add(film_title)
                 return 'Comedy'
             for genre in movie['genres']:
@@ -83,7 +83,6 @@ def get_nominee_films(data, year):
     anim_films = {}
     song_films = {}
     score_films = {}
-    foreign_films = {}
     screenplay = {}
     for n in noms:
         if neg(n):
@@ -92,58 +91,55 @@ def get_nominee_films(data, year):
                                     'supporting', 'original', 'performance', 'screenplay',
                                     'score', 'director', 'television']):
             films = [f for f in all_films if f in n]
-            for film in films:
-                c = category(film)
+            for nom in films:
+                c = category(nom)
                 if c == 'Drama':
-                    if film in drama_films:
-                        drama_films[film] += 1
+                    if nom in drama_films:
+                        drama_films[nom] += 1
                     else:
-                        drama_films[film] = 1
+                        drama_films[nom] = 1
                 elif c == 'Comedy':
-                    if film in com_films:
-                        com_films[film] += 1
+                    if nom in com_films:
+                        com_films[nom] += 1
                     else:
-                        com_films[film] = 1
+                        com_films[nom] = 1
                 elif c == 'Animation':
-                    if film in anim_films:
-                        anim_films[film] += 1
+                    if nom in anim_films:
+                        anim_films[nom] += 1
                     else:
-                        anim_films[film] = 1
+                        anim_films[nom] = 1
         elif "song" in n:
             films = [f for f in all_films if f in n]
-            for film in films:
-                if film in song_films:
-                    song_films[film] += 1
+            for nom in films:
+                if nom in song_films:
+                    song_films[nom] += 1
                 else:
-                    song_films[film] = 1
+                    song_films[nom] = 1
         elif "score" in n:
             films = [f for f in all_films if f in n]
-            for film in films:
-                if film in score_films:
-                    score_films[film] += 1
+            for nom in films:
+                if nom in score_films:
+                    score_films[nom] += 1
                 else:
-                    score_films[film] = 1
-        elif "foreign language" in n:
-            films = [f for f in all_films if f in n]
-            for film in films:
-                if film in foreign_films:
-                    foreign_films[film] += 1
-                else:
-                    foreign_films[film] = 1
+                    score_films[nom] = 1
         elif "screenplay" in n:
             films = [f for f in all_films if f in n]
-            for film in films:
-                if film in screenplay:
-                    screenplay[film] += 1
+            for nom in films:
+                if nom in screenplay:
+                    screenplay[nom] += 1
                 else:
-                    screenplay[film] = 1
-    return sorted(drama_films, key=drama_films.get, reverse=True)[:5], \
-           sorted(com_films, key=com_films.get, reverse=True)[:5],\
-           sorted(anim_films, key=anim_films.get, reverse=True)[:5],\
-           sorted(song_films, key=song_films.get, reverse=True)[:5],\
-           sorted(score_films, key=score_films.get, reverse=True)[:5],\
-           sorted(foreign_films, key=foreign_films.get, reverse=True)[:5],\
-           sorted(screenplay, key=screenplay.get, reverse=True)[:5]
+                    screenplay[nom] = 1
+    nom = {}
+    nom['best motion picture - drama'] = sorted(drama_films, key=drama_films.get, reverse=True)[:5]
+    nom['best motion picture - comedy or musical'] = sorted(com_films, key=com_films.get, reverse=True)[:5]
+    nom['best animated film'] = sorted(anim_films, key=anim_films.get, reverse=True)[:5]
+    nom['best original song - motion picture'] = sorted(song_films, key=song_films.get, reverse=True)[:5]
+    nom['best original score - motion picture'] = sorted(score_films, key=score_films.get, reverse=True)[:5]
+    nom['best screenplay - motion picture'] = sorted(screenplay, key=screenplay.get, reverse=True)[:5]
+    win = {}
+    for award in nom:
+        win[award] = nom[award][0]
+    return win, nom
 
 
 def get_nominee_tv(data):
@@ -220,29 +216,18 @@ def get_nominee_tv(data):
 file = open('data/gg2013.json')
 data = json.load(file)
 
-'''
+
 data = list()
 
 with open('data/gg2020.json', 'r') as f_in:
     for line in f_in:
         data.append(json.loads(line))
-'''
 
-print(get_nominee_tv(data))
-'''
-nominees = get_nominee_films(data, '2013')
-print("Best Motion Picture - Drama")
-print(nominees[0])
-print("Best Motion Picture - Comedy or Musical")
-print(nominees[1])
-print("Best Animated Film")
-print(nominees[2])
-print("Best Original Song")
-print(nominees[3])
-print("Best Original Score")
-print(nominees[4])
-print("Best Foreign Language Film")
-print(nominees[5])
-'''
+
+# print(get_nominee_tv(data))
+
+winners, nominees = get_nominee_films(data, '2020')
+
+
 
 

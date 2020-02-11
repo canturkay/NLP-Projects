@@ -3,6 +3,7 @@ import nltk
 from itertools import islice
 from regex import awards_regex, movie_awards_regex, person_awards_regex, match_award
 from nltk.tokenize import RegexpTokenizer
+from collections import OrderedDict
 
 def get_movie_winner_for_award(tweets, award,first_names):# Given a dictionary of tweets and a specific award, returns the presenter of the
 
@@ -14,22 +15,41 @@ def get_movie_winner_for_award(tweets, award,first_names):# Given a dictionary o
         if match_award(tweet, award):
             #tags = nltk.pos_tag(nltk.word_tokenize(tweet))
             tags = tokenizer.tokenize(tweet)
-            for i in range(len(tags) - 1):
-                name = ''
-                lastName = ''
-                if tags[i][0].isupper() and tags[i] not in stopwords:
-                    name = tags[i]
-                    if name in potentialNames:
-                        potentialNames[name] += 1
-                        if potentialNames[name] == 100:
-                            potentialNames = dict(
-                                sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
-                            if potentialNames:
-                                potentialNames = [*potentialNames]
-                                winner = potentialNames[0]
-                                return winner
+            name = ''
+            i = 0
+            while i < len(tags):
+                while i < len(tags) and tags[i][0].isupper() and tags[i] not in stopwords:
+                    # print
+                    name += tags[i] + ' '
+                    i += 1
+                name = name[:-1]
+                i += 1
+                break
+            if name == '':
+                continue
+            if name in potentialNames:
+                potentialNames[name] += 1
+                if potentialNames[name] == 100:
+
+                    potentialNames = dict(
+                        sorted(potentialNames.items(), key=lambda item: item[1], reverse=True)[:10])
+                    # if potentialNames:
+                    # print(potentialNames)
+                    mostFreq = max(potentialNames.values())
+                    inv_map = OrderedDict((v, k) for k, v in potentialNames.items())
+                    winner = []
+                    for freq in inv_map:
+                        if freq + 15 > mostFreq:
+                            winner.append(inv_map[freq])
                         else:
-                            potentialNames[name] = 1
+                            return ' '.join(winner)
+
+                    potentialNames = [*potentialNames]
+                    winner = potentialNames[0]
+                    return winner
+            else:
+                potentialNames[name] = 1
+            
 
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
@@ -87,6 +107,7 @@ def get_winners(data, first_names):
             tweets.append(line)
 
     count = 0
+
     for award in awards_regex.keys():
         tags = nltk.pos_tag(nltk.word_tokenize(award))
         for tag in tags:
@@ -95,7 +116,7 @@ def get_winners(data, first_names):
         winners[award] = get_person_winner_for_award(tweets, award, first_names)
         count += 1
         print(int(count / len(awards_regex.keys()) * 100), "% Complete")
-
+   
     for award in movie_awards_regex.keys():
         winners[award] = get_movie_winner_for_award(tweets, award, first_names)
         count += 1
@@ -104,7 +125,11 @@ def get_winners(data, first_names):
 
 
 stopwords = ['RT', 'Golden', 'Globes',
-             'GoldenGlobes', '@goldenglobes', '@', 'goldenglobes', 'Best', 'Award']
+             'GoldenGlobes', '@goldenglobes', '@', 'goldenglobes', 'Best', 'Award', 'Picture', 'Musical', 'Comedy',
+             'Drama', 'Motion', 'Globe', 'Actress', 'Actor', 'Performance', '#', 'Foreign', 'Language', 'Animated',
+             'Film', 'Supporting', 'TV', 'Series', 'Television', 'Song', 'Score', 'Screenplay', 'Limited', 'Original',
+             'Feature', 'Disney', 'Pixar', 'Miniseries', 'EW', 'Variety', 'BBC', 'NBC', 'Movie', 'Wins', 'Won',
+             'Winning']
 
 file_first_names = open('data/names.json')
 first_names = json.load(file_first_names)
@@ -144,9 +169,9 @@ awardkeywords = ["best screenplay",
 #     tweets = [tweet["text"] for tweet in data]
 #     print(get_winners(tweets, first_names))
 
-# data = list()
-# with open('data/gg2020.json', 'r') as f_in:
-#   for line in f_in:
-#     data.append(json.loads(line))
-#   tweets = [tweet["text"] for tweet in data]
-# print(get_winners(tweets,  first_names))
+data = list()
+with open('data/gg2020.json', 'r') as f_in:
+    for line in f_in:
+        data.append(json.loads(line))
+    tweets = [tweet["text"] for tweet in data]
+print(get_winners(tweets, first_names))
