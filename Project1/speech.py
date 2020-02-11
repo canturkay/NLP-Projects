@@ -42,14 +42,14 @@ def analyze_speeches(data, first_names = first_names):
                                                  lastName] += sent
                                   # print(name + ' ' + lastName, potentialNames[name + ' ' + lastName])
                                   if(potentialNames[name + ' ' +
-                                                    lastName] >= 300):
+                                                    lastName] >= 150):
                                         potentialNames = dict(
                                             sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
                                         potentialNames = [
                                             *potentialNames]
                                         return potentialNames
                             else:
-                                  potentialNames[name + ' ' + lastName] = 10
+                                  potentialNames[name + ' ' + lastName] = 1
           count += 1
           if count % 1000 == 0:
             print(int(count / len(data) * 100), "% Complete")
