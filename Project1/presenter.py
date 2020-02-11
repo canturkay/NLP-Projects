@@ -1,7 +1,7 @@
 import json
 import nltk
 from itertools import islice
-from Project1.regex import awards_regex, match_award, person_awards_regex
+from regex import awards_regex, match_award, person_awards_regex
 from nltk.tokenize import RegexpTokenizer
 
 
