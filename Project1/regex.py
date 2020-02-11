@@ -54,7 +54,7 @@ person_awards_regex = {"best screenplay - motion picture":
                 "best director - motion picture":
                     r'best director.*motion picture',
                 "best performance by an actress in a television series - comedy or musical":
-                    r'best performance.*actress.*[tv|television] series.*comedy.*musical',
+                    r'best performance.*actress.*(tv|television) series.*comedy.*musical',
                 "best performance by an actor in a supporting role in a motion picture":
                     r'best performance.*actor.*supporting.*motion picture',
                 "best performance by an actress in a supporting role in a series, mini-series or motion picture made for television":

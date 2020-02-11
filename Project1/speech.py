@@ -39,7 +39,7 @@ def analyze_speeches(data, first_names = first_names):
                                                     *potentialNames]
                                                 return potentialNames
                                     else:
-                                                potentialNames[name + ' ' +
+                                          potentialNames[name + ' ' +
                                                                lastName] = 10
 
             count += 1

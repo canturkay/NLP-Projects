@@ -35,11 +35,10 @@ awardkeywords = ["best screenplay",
                 ]
 def get_winner_for_award(tweets, award, first_names = first_names):
     # Given a dictionary of tweets and a specific award, returns the presenter of the
-
     potentialNames = {}
     for tweet in tweets:
-        if 'movies' not in tweet.lower() or 'series' not in tweet.lower() or 'mini-series' not in tweet.lower():
-            if ('won' in tweet.lower() or 'win' in tweet.lower() or 'got' in tweet.lower()) and award.lower() in tweet.lower():
+        if 'movies' not in award.lower() or 'series' not in award.lower() or 'limited series' in award.lower():
+            if ('won' in tweet.lower() or 'win' in tweet.lower()) and award.lower() in tweet.lower():
                 tags = nltk.pos_tag(nltk.word_tokenize(tweet))
                 for i in range(len(tags) - 1):
                     name = ''
@@ -77,8 +76,8 @@ def get_winner_for_award(tweets, award, first_names = first_names):
                                     potentialNames = [*potentialNames]
                                     winner = potentialNames[0]
                                     return winner
-                            else:
-                                potentialNames[name] = 1
+                        else:
+                            potentialNames[name] = 1
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
