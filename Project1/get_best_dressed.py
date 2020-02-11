@@ -28,7 +28,7 @@ def get_best_dressed(data, first_names):
                                                            lastName] += sent
                                           # print(name + ' ' + lastName, potentialNames[name + ' ' + lastName])
                                           if(potentialNames[name + ' ' +
-                                                            lastName] >= 150):
+                                                            lastName] >= 50):
                                                 potentialNames = dict(
                                                     sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
                                                 potentialNames = [*potentialNames]

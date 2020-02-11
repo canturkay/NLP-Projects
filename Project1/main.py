@@ -44,6 +44,7 @@ class GGresponse:
     presenters2013 = {}
     nominee_people2013 = {}
     nominee_movies2013 = {}
+    nominee2013 = {}
 
     winners2013 = {}
     awards2013 = {}
@@ -57,6 +58,7 @@ class GGresponse:
     presenters2015 = {}
     nominee_people2015 = {}
     nominee_movies2015 = {}
+    nominee2015 = {}
 
     winners2015 = {}
     awards2015 = {}
@@ -101,19 +103,34 @@ class GGresponse:
         print(self)
 
     def __str__(self):
-        s = ""
+        s = "Golden Globes 2013: \n"
         for award in awards_regex.keys():
             s += "Award: " + ' '.join(x.capitalize() for x in award.split()) + "\n"
-            s += "Presenters: " + ', '.join(x for x in (self.presenters[award] if self.presenters[award] else [])) + "\n"
-            s += "Nominees: " + ', '.join(x if x else "Not found" for x in (self.get_award_nominees(award) if self.get_award_nominees(award) != None else [])) + "\n"
-            s += "Winner: " + (str(self.winners[award]) if award in self.winners.keys() else "Not Found") + "\n\n"
+            s += "Presenters: " + ', '.join(x for x in (self.presenters2013[award] if self.presenters2013[award] else [])) + "\n"
+            s += "Nominees: " + ', '.join(x if x else "Not found" for x in (self.get_award_nominees2013(award) if self.get_award_nominees2013(award) != None else [])) + "\n"
+            s += "Winner: " + (str(self.winners2013[award]) if award in self.winners2013.keys() else "Not Found") + "\n\n"
 
-        s += "Best Dressed: " + self.dresses["best"] + "\n"
-        s += "Worst Dressed: " + self.dresses["worst"] + "\n"
-        s += "Most Controversially Dressed: " + self.dresses["controversial"] + "\n\n"
+        s += "Best Dressed: " + self.dresses2013["best"] + "\n"
+        s += "Worst Dressed: " + self.dresses2013["worst"] + "\n"
+        s += "Most Controversially Dressed: " + self.dresses2013["controversial"] + "\n\n"
 
-        s += "Best Speech: " + self.speech["best"] + "\n"
-        s += "Worst Speech: " + self.speech["worst"] + "\n\n"
+        s += "Best Speech: " + self.speech2013["best"] + "\n"
+        s += "Worst Speech: " + self.speech2013["worst"] + "\n\n"
+
+
+        s = "Golden Globes 2015: \n"
+        for award in awards_regex.keys():
+            s += "Award: " + ' '.join(x.capitalize() for x in award.split()) + "\n"
+            s += "Presenters: " + ', '.join(x for x in (self.presenters2015[award] if self.presenters2015[award] else [])) + "\n"
+            s += "Nominees: " + ', '.join(x if x else "Not found" for x in (self.get_award_nominees2015(award) if self.get_award_nominees2015(award) != None else [])) + "\n"
+            s += "Winner: " + (str(self.winners2015[award]) if award in self.winners2015.keys() else "Not Found") + "\n\n"
+
+        s += "Best Dressed: " + self.dresses2015["best"] + "\n"
+        s += "Worst Dressed: " + self.dresses2015["worst"] + "\n"
+        s += "Most Controversially Dressed: " + self.dresses2015["controversial"] + "\n\n"
+
+        s += "Best Speech: " + self.speech2015["best"] + "\n"
+        s += "Worst Speech: " + self.speech2015["worst"] + "\n\n"
 
         s += "Fetched Award Names: " + ', '.join(x for x in self.award_names) + "\n"
         return s
@@ -121,6 +138,9 @@ class GGresponse:
     def get_nominees(self):
         self.nominee_people2013 = get_person_nominees(self.tweets2013, self.first_names)
         self.nominee_people2015 = get_person_nominees(self.tweets2015, self.first_names)
+
+        self.nominee2013 = self.nominee_people2013 + self.nominee_movies2013
+        self.nominee2015 = self.nominee_people2015 + self.nominee_movies2015
         # print(self.nominee_people)
         # self.nominee_movies = get_nominee_movies(self.data)
 

@@ -168,10 +168,10 @@ awardkeywords = ["best screenplay",
 #     data = json.load(file)
 #     tweets = [tweet["text"] for tweet in data]
 #     print(get_winners(tweets, first_names))
-
-data = list()
-with open('data/gg2020.json', 'r') as f_in:
-    for line in f_in:
-        data.append(json.loads(line))
-    tweets = [tweet["text"] for tweet in data]
-print(get_winners(tweets, first_names))
+#
+# data = list()
+# with open('data/gg2020.json', 'r') as f_in:
+#     for line in f_in:
+#         data.append(json.loads(line))
+#     tweets = [tweet["text"] for tweet in data]
+# print(get_winners(tweets, first_names))
