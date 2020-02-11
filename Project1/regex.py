@@ -53,8 +53,7 @@ awards_regex = {"best screenplay - motion picture":
                 r'best animated',
                 }
 
-person_awards_regex = {"best screenplay - motion picture":
-                       r'best screenplay',
+person_awards_regex = {
                        "best director - motion picture":
                        r'best director',
                        "best performance by an actress in a television series - comedy or musical":
@@ -89,7 +88,9 @@ person_awards_regex = {"best screenplay - motion picture":
                        r'(cecil|lifetime).*award',
                        }
 
-movie_awards_regex = {"best foreign language film":
+movie_awards_regex = {"best screenplay - motion picture":
+                       r'best screenplay',
+                      "best foreign language film":
                       r'best foreign language', 
                       "best original score - motion picture":
                       r'best original score',

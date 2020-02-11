@@ -141,7 +141,7 @@ def get_nominee_films(data, year):
         win[award] = nom[award][0]
     return win, nom
 
-
+'''
 def get_nominee_tv(data):
     file_first_names = open('data/names.json')
     first_names = json.load(file_first_names)
@@ -211,24 +211,24 @@ def get_nominee_tv(data):
         potential_names[award] = sorted(potential_names[award], key=potential_names[award].get, reverse=True)[:5]
 
     return potential_names
+'''
 
-
-file = open('data/gg2013.json')
-data = json.load(file)
-
-
-data = list()
-
-with open('data/gg2020.json', 'r') as f_in:
-    for line in f_in:
-        data.append(json.loads(line))
-
-
-# print(get_nominee_tv(data))
-
-winners, nominees = get_nominee_films(data, '2020')
-print(winners)
-print(nominees)
+# file = open('data/gg2013.json')
+# data = json.load(file)
+#
+#
+# data = list()
+#
+# with open('data/gg2020.json', 'r') as f_in:
+#     for line in f_in:
+#         data.append(json.loads(line))
+#
+#
+# # print(get_nominee_tv(data))
+#
+# winners, nominees = get_nominee_films(data, '2020')
+# print(winners)
+# print(nominees)
 
 
 

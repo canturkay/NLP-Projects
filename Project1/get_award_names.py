@@ -28,7 +28,7 @@ def get_award_name(tags):
         return None
 
 
-def get_potential_award_names(data):
+def get_award_names(data):
     count = 0
     awards = {}
 
@@ -41,7 +41,7 @@ def get_potential_award_names(data):
             tweets.append(line)
 
     tokenizer = RegexpTokenizer(r'\w+')
-
+    award_keywords = ["act", "award", "television", "series", "performance", "picture", "supporting"]
     for tweet in tweets:
         tags = tokenizer.tokenize(tweet)
         # targets = ["NNP", "NN"]
@@ -49,7 +49,11 @@ def get_potential_award_names(data):
         award_name = get_award_name(tags)   # list(filter(lambda x: x[1] in targets, tags)))
         if award_name:
             if award_name in awards:
-                awards[award_name] += 1
+                if len(award_name.split()) >= 4:
+                    if any(keyword in tweet.lower() for keyword in award_keywords):
+                        awards[award_name] += 3
+                    else:
+                        awards[award_name] += 1
             else:
                 awards[award_name] = 1
         count += 1
@@ -59,28 +63,11 @@ def get_potential_award_names(data):
     # awards_file = open("processed_data/awards.json", "w+")
     # awards_file.write(json.dumps(awards))
     # awards_file.close()
-    return awards
-
-
-def parse_awards(awards):
-    # awards_file = open("processed_data/awards.json", encoding="cp866")
-    # awards = json.load(awards_file)
-
-    awards_final = []
-    # print(awards)
-    awards_threshold = .2
-
-    for award, count in awards.items():
-        if count > len(awards) * awards_threshold:
-            awards_final.append(award)
-
-    return awards_final
-
-
-def get_award_names(data_in):
-    potential_awards = get_potential_award_names(data_in)
-    return parse_awards(potential_awards)
-
+    awards = dict(sorted(awards.items(),
+                key=lambda item: item[1], reverse=True))
+    awards = [*awards]
+    return awards[:26]
+#
 # file = open('data/gg2015.json', encoding="cp866")
 # data = json.load(file)
 # print(get_award_names([x["text"] for x in data]))

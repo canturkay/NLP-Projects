@@ -15,7 +15,7 @@ def get_person_noms_for_award(data, award, first_names, presenters):
     stopwords = ['RT', 'Golden', 'Globes',
                  'GoldenGlobes', '@goldenglobes', '@']
 
-    keywords = ["nomin"]
+    keywords = ["nom", "hope", "should", "win", "get", "want", "chance", "wish", "for", "deserve"]
     tweets = []
     for line in data:
         if any(keyword in line.lower() for keyword in keywords):
@@ -39,6 +39,7 @@ def get_person_noms_for_award(data, award, first_names, presenters):
                                 potentialNames = dict(
                                     sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
                                 if potentialNames:
+                                    # print(potentialNames)
                                     potentialNames = [*potentialNames]
                                     nominees = potentialNames[:5]
                                     return nominees
@@ -47,10 +48,11 @@ def get_person_noms_for_award(data, award, first_names, presenters):
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
+        # print(potentialNames)
         potentialNames = [*potentialNames]
         return potentialNames[:5]
     else:
-        return []
+        return [""]
 
 
 def get_people_noms(data, first_names, presenters):
@@ -65,20 +67,22 @@ def get_people_noms(data, first_names, presenters):
             stopwords.append(tag[0])
     count = 0
     for award in person_awards_regex.keys():
-      if award != 'cecil b. de mille award':
-          nominees[award] = get_person_noms_for_award(
-              data, award, first_names, presenters[award])
+      if award != 'cecil b. demille award':
+          presenters_in = presenters[award] if award in presenters.keys() else []
+          nominees[award] = get_person_noms_for_award(data, award, first_names, presenters_in)
+      else:
+          nominees[award] = []
       count += 1
       print(int(count / len(person_awards_regex.keys()) * 100), "% Complete")
     return nominees
-
-paths = ['data/gg2013.json']
-
-for path in paths:
-    file = open(path)
-    data = json.load(file)
-    data_text = [tweet["text"] for tweet in data]
-    print(get_people_noms(data_text, first_names))
+#
+# paths = ['data/gg2013.json']
+#
+# for path in paths:
+#     file = open(path)
+#     data = json.load(file)
+#     data_text = [tweet["text"] for tweet in data]
+#     print(get_people_noms(data_text, first_names))
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

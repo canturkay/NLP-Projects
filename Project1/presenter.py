@@ -1,7 +1,7 @@
 import json
 import nltk
 from itertools import islice
-from Project1.regex import awards_regex, match_award, person_awards_regex
+from regex import awards_regex, match_award, person_awards_regex
 from nltk.tokenize import RegexpTokenizer
 
 
@@ -9,7 +9,7 @@ def get_presenter_for_award(data, award, first_names, winner_list):
     # Given a dictionary of tweets and a specific award, returns the presenter of the
     stopwords = ['RT', 'Golden', 'Globes', 'GoldenGlobes', '@goldenglobes', '@']
 
-    keywords = ["present"]
+    keywords = ["present", "giv", ]
 
     tweets = []
     for line in data:
@@ -37,7 +37,7 @@ def get_presenter_for_award(data, award, first_names, winner_list):
                                     if potentialNames:
                                         first, second = islice(potentialNames.values(), 2)
                                         potentialNames = [*potentialNames]
-                                        if first <= 2 * second:
+                                        if first <= 1.5 * second:
                                             presenters = potentialNames[:2]
                                         else:
                                             presenters = potentialNames[:1]
@@ -47,10 +47,16 @@ def get_presenter_for_award(data, award, first_names, winner_list):
     if potentialNames:
         potentialNames = dict(sorted(potentialNames.items(),
                                      key=lambda item: item[1], reverse=True))
-        potentialNames = [*potentialNames]
-        return potentialNames[:1]
+        if len(potentialNames) >= 2:
+            first, second = islice(potentialNames.values(), 2)
+            potentialNames = [*potentialNames]
+            if first <= 1.5 * second:
+                presenters = potentialNames[:2]
+            else:
+                presenters = potentialNames[:1]
+            return presenters
     else:
-        return
+        return [""]
 
 
 def get_presenters(data, first_names, winners):
