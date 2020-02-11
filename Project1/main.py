@@ -1,12 +1,13 @@
 import json
 
-from get_nominee_names import get_nominee_names
-from get_award_names import get_award_names
-from host import get_hosts
-from presenter import get_presenters
-from get_best_dressed import dress_sentiment
-from regex import search_award, awards_regex
-from get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
+from Project1.get_nominee_names import get_nominee_names
+from Project1.get_award_names import get_award_names
+from Project1.host import get_hosts
+from Project1.presenter import get_presenters
+from Project1.get_best_dressed import dress_sentiment
+from Project1.regex import search_award, awards_regex
+from Project1.get_award_keyword import get_person_nominees, get_presenters_new, get_person_winners
+from Project1.winners import get_winners
 
 print("Running!")
 
@@ -117,7 +118,8 @@ class GGresponse:
         # self.nominee_movies = get_nominee_movies(self.data)
 
     def get_winners(self):
-        self.winners = get_person_winners(self.tweets, self.first_names)
+        # self.winners = get_person_winners(self.tweets, self.first_names)
+        self.winners = get_winners(self.tweets, self.first_names)
         for award in awards_regex.keys():
             if award not in self.winners.keys():
                 nominees = self.nominee_people[award] if award in self.nominee_people.keys() else None

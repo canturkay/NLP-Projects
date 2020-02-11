@@ -135,14 +135,14 @@ awardkeywords = ["best screenplay",
                     "Best TV comedy actor"
                 ]
 
-paths = ['data/gg2015.json', 'data/gg2013.json']
-
-
-for path in paths:
-    file = open(path)
-    data = json.load(file)
-    tweets = [tweet["text"] for tweet in data]
-    print(get_winners(tweets, first_names))
+# paths = ['data/gg2013.json']#, 'data/gg2013.json']
+#
+#
+# for path in paths:
+#     file = open(path)
+#     data = json.load(file)
+#     tweets = [tweet["text"] for tweet in data]
+#     print(get_winners(tweets, first_names))
 
 # data = list()
 # with open('data/gg2020.json', 'r') as f_in:

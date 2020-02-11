@@ -2,6 +2,7 @@ import json
 import nltk
 from itertools import islice
 from textblob import TextBlob
+from nltk.tokenize import RegexpTokenizer
 
 file_first_names = open('data/names.json')
 first_names = json.load(file_first_names)
@@ -15,36 +16,43 @@ def analyze_speeches(data, first_names = first_names):
       potentialNames = {}
       count = 0
 
-      for tweet in data:
-            if 'speech' in tweet.lower() or 'monologue' in tweet.lower():
-                  tags = nltk.pos_tag(nltk.word_tokenize(tweet))
-                  for i in range(len(tags) - 1):
-                        name = ''
-                        lastName = ''
-                        if tags[i][1] == 'NNP' and tags[i][0] not in stopwords and tags[i][0] in first_names:
-                              name = tags[i][0]
-                              if tags[i + 1][1] == 'NNP' and tags[i + 1][0] not in stopwords:
-                                    lastName = tags[i + 1][0]
-                                    blob = TextBlob(tweet)
-                                    sent = blob.sentences[0].sentiment.polarity
-                                    if name + ' ' + lastName in potentialNames:
-                                          potentialNames[name + ' ' +
-                                                         lastName] += sent
-                                          # print(name + ' ' + lastName, potentialNames[name + ' ' + lastName])
-                                          if(potentialNames[name + ' ' +
-                                                            lastName] >= 300):
-                                                potentialNames = dict(
-                                                    sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
-                                                potentialNames = [
-                                                    *potentialNames]
-                                                return potentialNames
-                                    else:
-                                          potentialNames[name + ' ' +
-                                                               lastName] = 10
+      tokenizer = RegexpTokenizer(r'\w+')
 
-            count += 1
-            if count % 5000 == 0:
-                print(int(count / len(data) * 100), "% Complete")
+      keywords = ["speech", "monologue"]
+
+      tweets = []
+      for line in data:
+          if any(keyword in line.lower() for keyword in keywords):
+              tweets.append(line)
+
+      for tweet in tweets:
+          # tags = nltk.pos_tag(nltk.word_tokenize(tweet))
+          tags = tokenizer.tokenize(tweet)
+          for i in range(len(tags) - 1):
+                name = ''
+                lastName = ''
+                if tags[i][0].isupper() and tags[i] not in stopwords and tags[i] in first_names:
+                      name = tags[i]
+                      if tags[i + 1][0].isupper() and tags[i + 1] not in stopwords:
+                            lastName = tags[i + 1]
+                            blob = TextBlob(tweet)
+                            sent = blob.sentences[0].sentiment.polarity
+                            if name + ' ' + lastName in potentialNames:
+                                  potentialNames[name + ' ' +
+                                                 lastName] += sent
+                                  # print(name + ' ' + lastName, potentialNames[name + ' ' + lastName])
+                                  if(potentialNames[name + ' ' +
+                                                    lastName] >= 300):
+                                        potentialNames = dict(
+                                            sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
+                                        potentialNames = [
+                                            *potentialNames]
+                                        return potentialNames
+                            else:
+                                  potentialNames[name + ' ' + lastName] = 10
+          count += 1
+          if count % 1000 == 0:
+            print(int(count / len(data) * 100), "% Complete")
 
       potentialNames = dict(
           sorted(potentialNames.items(), key=lambda item: item[1], reverse=True))
@@ -68,7 +76,7 @@ def speech_sentiment(data, first_names = first_names):
   return sentiment
 
 
-paths = ['data/gg2015.json', 'data/gg2013.json']
+paths = ['data/gg2015.json']#, 'data/gg2013.json']
 
 
 
@@ -80,10 +88,10 @@ for path in paths:
   candidates = speech_sentiment(tweets)
   print(candidates)
 
-data = list()
-with open('data/gg2020.json', 'r') as f_in:
-  for line in f_in:
-    data.append(json.loads(line))
-  tweets = [tweet["text"] for tweet in data]
-candidates = speech_sentiment(tweets)
-print(candidates)
+# data = list()
+# with open('data/gg2020.json', 'r') as f_in:
+#   for line in f_in:
+#     data.append(json.loads(line))
+#   tweets = [tweet["text"] for tweet in data]
+# candidates = speech_sentiment(tweets)
+# print(candidates)
