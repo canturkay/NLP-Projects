@@ -141,7 +141,7 @@ def get_nominee_films(data, year):
         win[award] = nom[award][0]
     return win, nom
 
-
+'''
 def get_nominee_tv(data):
     file_first_names = open('data/names.json')
     first_names = json.load(file_first_names)
@@ -211,7 +211,7 @@ def get_nominee_tv(data):
         potential_names[award] = sorted(potential_names[award], key=potential_names[award].get, reverse=True)[:5]
 
     return potential_names
-
+'''
 
 file = open('data/gg2013.json')
 data = json.load(file)
