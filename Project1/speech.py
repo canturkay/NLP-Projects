@@ -59,14 +59,6 @@ def analyze_speeches(data, first_names = first_names):
       potentialNames = [*potentialNames]
       return potentialNames
 
-
-def bestSpeech(potentialNames):
-  return potentialNames[0]
-
-
-def worstSpeech(potentialNames):
-  return potentialNames[len(potentialNames) - 1]
-
 def speech_sentiment(data, first_names = first_names):
   #Given a list of tweets, finds the best, worst and most controversially dressed people at the Golden Globes for the year
   candidates = analyze_speeches(data, first_names)
