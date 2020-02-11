@@ -1,7 +1,7 @@
 import json
 import nltk
 from itertools import islice
-from Project1.regex import awards_regex, movie_awards_regex, person_awards_regex, match_award
+from regex import awards_regex, movie_awards_regex, person_awards_regex, match_award
 from nltk.tokenize import RegexpTokenizer
 
 def get_movie_winner_for_award(tweets, award,first_names):# Given a dictionary of tweets and a specific award, returns the presenter of the
